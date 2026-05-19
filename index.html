@@ -7,11 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-
   <style>
-    /* ============================================================
-       VARIABILI COLORE — modifica qui per cambiare la palette
-    ============================================================ */
     :root {
       --marrone:    #5c3d2e;
       --ocra:       #c8a84b;
@@ -23,284 +19,189 @@
       --testo:      #3a2a1e;
       --testo-soft: #7a6555;
     }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--testo); overflow-x:hidden; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Jost', sans-serif;
-      background: var(--crema);
-      color: var(--testo);
-      overflow-x: hidden;
-    }
-
-    /* ── NAVBAR ── */
+    /* NAVBAR */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(250,246,240,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--ocra-light);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 64px;
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      background:rgba(250,246,240,0.93); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--ocra-light);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px; height:64px;
     }
-    .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em;
-      color: var(--marrone); text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a {
-      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--testo-soft);
-      text-decoration: none; transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--ocra); }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; letter-spacing:.15em; color:var(--marrone); text-decoration:none; }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--testo-soft); text-decoration:none; transition:color .3s; }
+    .nav-links a:hover { color:var(--ocra); }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--marrone); }
 
-    /* hamburger mobile */
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--marrone); transition: 0.3s; }
-
-    /* ── HERO ── */
+    /* HERO */
     #hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-      background: linear-gradient(160deg, var(--marrone) 0%, #8b5e3c 45%, var(--ocra) 100%);
-      position: relative; overflow: hidden;
-      padding: 80px 24px 60px;
+      min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; position:relative; overflow:hidden; padding:80px 24px 60px;
+      background:linear-gradient(160deg, var(--marrone) 0%, #8b5e3c 45%, var(--ocra) 100%);
     }
     #hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 70% 30%, rgba(200,168,75,0.25) 0%, transparent 60%),
-                  radial-gradient(ellipse at 20% 80%, rgba(212,165,165,0.2) 0%, transparent 50%);
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 70% 30%,rgba(200,168,75,.25) 0%,transparent 60%),
+                 radial-gradient(ellipse at 20% 80%,rgba(212,165,165,.2) 0%,transparent 50%);
     }
-    .hero-wave {
-      position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 80px; overflow: hidden;
-    }
-    .hero-wave svg { width: 100%; height: 100%; }
+    .hero-wave { position:absolute; bottom:-2px; left:0; right:0; height:80px; overflow:hidden; }
+    .hero-wave svg { width:100%; height:100%; }
+    .hero-content { position:relative; z-index:2; }
+    .hero-badge { display:inline-block; font-size:.72rem; letter-spacing:.25em; text-transform:uppercase; color:var(--ocra-light); border:1px solid rgba(200,168,75,.5); padding:6px 18px; border-radius:20px; margin-bottom:28px; animation:fadeUp .8s ease both; }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,10vw,7rem); font-weight:300; letter-spacing:.08em; line-height:1; color:var(--bianco); animation:fadeUp .9s .1s ease both; }
+    .hero-subtitle { font-size:.9rem; font-weight:300; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra-light); margin-top:14px; animation:fadeUp 1s .2s ease both; }
+    .hero-cta { margin-top:44px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 1s .35s ease both; }
+    .btn { display:inline-block; padding:14px 34px; font-size:.8rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:all .3s; cursor:pointer; border:none; font-family:'Jost',sans-serif; }
+    .btn-light { background:var(--bianco); color:var(--marrone); }
+    .btn-light:hover { background:var(--ocra-light); transform:translateY(-2px); }
+    .btn-outline { border:1px solid rgba(255,255,255,.5); color:var(--bianco); background:transparent; }
+    .btn-outline:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); }
 
-    .hero-content { position: relative; z-index: 2; }
-    .hero-badge {
-      display: inline-block;
-      font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--ocra-light); border: 1px solid rgba(200,168,75,0.5);
-      padding: 6px 18px; border-radius: 20px; margin-bottom: 28px;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 10vw, 7rem);
-      font-weight: 300; letter-spacing: 0.08em; line-height: 1;
-      color: var(--bianco);
-      animation: fadeUp 0.9s 0.1s ease both;
-    }
-    .hero-subtitle {
-      font-size: 0.9rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--ocra-light); margin-top: 14px;
-      animation: fadeUp 1s 0.2s ease both;
-    }
-    .hero-cta {
-      margin-top: 44px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 1s 0.35s ease both;
-    }
-    .btn {
-      display: inline-block; padding: 14px 34px;
-      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border-radius: 2px; transition: all 0.3s;
-    }
-    .btn-light {
-      background: var(--bianco); color: var(--marrone);
-    }
-    .btn-light:hover { background: var(--ocra-light); transform: translateY(-2px); }
-    .btn-outline {
-      border: 1px solid rgba(255,255,255,0.5); color: var(--bianco);
-    }
-    .btn-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    /* COMUNI */
+    section { padding:80px 40px; }
+    .section-label { font-size:.7rem; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra); margin-bottom:10px; }
+    .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--marrone); line-height:1.2; }
+    .section-divider { width:48px; height:2px; background:var(--ocra); margin:20px 0 40px; }
+    .section-center { text-align:center; }
+    .section-center .section-divider { margin:20px auto 40px; }
 
-    /* ── SEZIONI COMUNI ── */
-    section { padding: 80px 40px; }
-    .section-label {
-      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
-      color: var(--ocra); margin-bottom: 10px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300;
-      color: var(--marrone); line-height: 1.2;
-    }
-    .section-divider {
-      width: 48px; height: 2px; background: var(--ocra);
-      margin: 20px 0 40px;
-    }
-    .section-center { text-align: center; }
-    .section-center .section-divider { margin: 20px auto 40px; }
+    /* NOVITÀ */
+    #novita { background:var(--bianco); }
+    .novita-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:28px; }
+    .novita-card { background:var(--crema); border:1px solid var(--ocra-light); border-radius:4px; overflow:hidden; transition:transform .3s,box-shadow .3s; }
+    .novita-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(92,61,46,.12); }
+    .novita-img { width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--ocra-light); display:flex; align-items:center; justify-content:center; }
+    .novita-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+    .novita-card:hover .novita-img img { transform:scale(1.05); }
+    .novita-img .ef { font-size:3.5rem; }
+    .novita-body { padding:20px; }
+    .novita-tag { font-size:.65rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--ocra); margin-bottom:6px; }
+    .novita-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--marrone); margin-bottom:6px; }
+    .novita-desc { font-size:.82rem; color:var(--testo-soft); line-height:1.6; }
+    .badge-nuovo { display:inline-block; background:var(--lotus); color:var(--marrone); font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; padding:3px 10px; border-radius:2px; margin-bottom:8px; }
 
-    /* ── NOVITÀ ── */
-    #novita { background: var(--bianco); }
-    .novita-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 28px; margin-top: 0;
-    }
-    .novita-card {
-      background: var(--crema);
-      border: 1px solid var(--ocra-light);
-      border-radius: 4px; overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .novita-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(92,61,46,0.12); }
-    .novita-img {
-      width: 100%; aspect-ratio: 4/3; object-fit: cover;
-      background: var(--ocra-light);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
-    }
-    .novita-body { padding: 20px; }
-    .novita-tag {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--ocra); margin-bottom: 6px;
-    }
-    .novita-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; color: var(--marrone); margin-bottom: 6px;
-    }
-    .novita-desc { font-size: 0.82rem; color: var(--testo-soft); line-height: 1.6; }
-    .badge-nuovo {
-      display: inline-block; background: var(--lotus); color: var(--marrone);
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 2px; margin-bottom: 8px;
-    }
+    /* PRODOTTI */
+    #prodotti { background:var(--lotus-soft); }
+    .categorie-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:20px; }
+    .categoria-card { background:var(--bianco); border-radius:4px; padding:32px 24px; text-align:center; border-bottom:3px solid var(--ocra-light); transition:border-color .3s,transform .3s,box-shadow .3s; cursor:pointer; }
+    .categoria-card:hover { border-color:var(--ocra); transform:translateY(-4px); box-shadow:0 12px 30px rgba(92,61,46,.1); }
+    .categoria-icon { font-size:2.2rem; margin-bottom:14px; display:block; }
+    .categoria-nome { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:var(--marrone); }
+    .categoria-desc { font-size:.78rem; color:var(--testo-soft); margin-top:6px; line-height:1.5; }
+    .categoria-cta { margin-top:14px; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ocra); font-weight:500; }
 
-    /* ── PRODOTTI ── */
-    #prodotti { background: var(--lotus-soft); }
-    .categorie-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .categoria-card {
-      background: var(--bianco); border-radius: 4px;
-      padding: 32px 24px; text-align: center;
-      border-bottom: 3px solid var(--ocra-light);
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    }
-    .categoria-card:hover {
-      border-color: var(--ocra); transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(92,61,46,0.1);
-    }
-    .categoria-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
-    .categoria-nome {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem; font-weight: 600; color: var(--marrone);
-    }
-    .categoria-desc { font-size: 0.78rem; color: var(--testo-soft); margin-top: 6px; line-height: 1.5; }
+    /* MODALE */
+    .modal-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(30,18,10,.78); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--crema); border-radius:6px; max-width:920px; width:100%; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 32px 80px rgba(30,18,10,.4); animation:modalIn .35s ease; }
+    @keyframes modalIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+    .modal-header { padding:24px 32px; border-bottom:1px solid var(--ocra-light); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:var(--bianco); }
+    .modal-title-wrap { display:flex; align-items:center; gap:14px; }
+    .modal-icon { font-size:1.8rem; }
+    .modal-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--marrone); }
+    .modal-desc { font-size:.82rem; color:var(--testo-soft); margin-top:2px; }
+    .modal-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--ocra-light); background:transparent; cursor:pointer; font-size:1.1rem; color:var(--testo-soft); display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+    .modal-close:hover { background:var(--ocra); color:var(--bianco); border-color:var(--ocra); }
+    .modal-body { padding:32px; overflow-y:auto; flex:1; }
 
-    /* ── CHI SIAMO ── */
-    #chisiamo {
-      background: var(--marrone);
-      color: var(--bianco);
-    }
-    #chisiamo .section-title { color: var(--ocra-light); }
-    #chisiamo .section-label { color: var(--ocra); }
-    #chisiamo .section-divider { background: var(--ocra); }
-    .chisiamo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .chisiamo-testo p {
-      font-size: 1rem; line-height: 1.9; color: rgba(255,255,255,0.8);
-      margin-bottom: 16px;
-    }
-    .chisiamo-valori { display: flex; flex-direction: column; gap: 20px; }
-    .valore {
-      display: flex; align-items: flex-start; gap: 16px;
-      background: rgba(255,255,255,0.06); padding: 20px; border-radius: 4px;
-      border-left: 3px solid var(--ocra);
-    }
-    .valore-icon { font-size: 1.6rem; flex-shrink: 0; }
-    .valore-titolo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--ocra-light); margin-bottom: 4px; }
-    .valore-testo { font-size: 0.82rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+    /* Stato vuoto */
+    .modal-empty { text-align:center; padding:60px 20px; color:var(--testo-soft); }
+    .modal-empty .mei { font-size:3rem; margin-bottom:16px; }
+    .modal-empty p { font-size:.9rem; line-height:1.8; }
+    .modal-empty code { background:var(--ocra-light); padding:2px 8px; border-radius:3px; font-size:.8rem; color:var(--marrone); }
 
-    /* ── ORARI ── */
-    #orari { background: var(--bianco); }
-    .orari-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-    .orari-tabella { width: 100%; border-collapse: collapse; }
-    .orari-tabella tr { border-bottom: 1px solid var(--ocra-light); }
-    .orari-tabella td { padding: 14px 0; font-size: 0.9rem; }
-    .orari-tabella td:first-child { color: var(--marrone); font-weight: 500; }
-    .orari-tabella td:last-child { color: var(--testo-soft); text-align: right; }
-    .chiuso { color: var(--lotus) !important; font-style: italic; }
+    /* Griglia catalogo */
+    .catalogo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; }
+    .catalogo-item { border-radius:4px; overflow:hidden; background:var(--bianco); border:1px solid var(--ocra-light); transition:transform .3s,box-shadow .3s; }
+    .catalogo-item.clickable { cursor:pointer; }
+    .catalogo-item.clickable:hover { transform:translateY(-4px); box-shadow:0 12px 30px rgba(92,61,46,.12); }
+    .catalogo-foto { width:100%; aspect-ratio:3/4; overflow:hidden; background:var(--ocra-light); display:flex; align-items:center; justify-content:center; }
+    .catalogo-foto img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+    .catalogo-item.clickable:hover .catalogo-foto img { transform:scale(1.07); }
+    .catalogo-foto .ef { font-size:3rem; }
+    .catalogo-info { padding:14px 16px; }
+    .catalogo-nome { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--marrone); margin-bottom:4px; }
+    .catalogo-note { font-size:.78rem; color:var(--testo-soft); line-height:1.5; }
+    .catalogo-prezzo { font-size:.85rem; font-weight:500; color:var(--ocra); margin-top:6px; }
 
-    .contatti-lista { display: flex; flex-direction: column; gap: 20px; }
-    .contatto-item { display: flex; align-items: center; gap: 16px; }
-    .contatto-icon {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--lotus-soft); display: flex; align-items: center;
-      justify-content: center; font-size: 1.2rem; flex-shrink: 0;
-      border: 1px solid var(--ocra-light);
-    }
-    .contatto-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ocra); }
-    .contatto-valore { font-size: 0.95rem; color: var(--testo); margin-top: 2px; }
-    .contatto-valore a { color: var(--marrone); text-decoration: none; }
-    .contatto-valore a:hover { color: var(--ocra); }
+    /* LIGHTBOX */
+    .lightbox { display:none; position:fixed; inset:0; z-index:900; background:rgba(10,5,0,.93); align-items:center; justify-content:center; }
+    .lightbox.open { display:flex; }
+    .lightbox-img { max-width:90vw; max-height:88vh; object-fit:contain; border-radius:3px; }
+    .lightbox-close { position:absolute; top:20px; right:24px; font-size:1.8rem; color:var(--bianco); cursor:pointer; background:none; border:none; opacity:.7; transition:opacity .2s; }
+    .lightbox-close:hover { opacity:1; }
+    .lightbox-caption { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.7); font-size:.85rem; }
 
-    /* ── MAPPA ── */
-    #mappa { background: var(--lotus-soft); padding: 0; }
-    .mappa-wrapper { position: relative; height: 360px; overflow: hidden; }
-    .mappa-wrapper iframe { width: 100%; height: 100%; border: none; filter: sepia(20%) saturate(80%); }
-    .mappa-overlay {
-      position: absolute; left: 40px; top: 50%; transform: translateY(-50%);
-      background: var(--bianco); padding: 28px 32px; border-radius: 4px;
-      box-shadow: 0 12px 40px rgba(92,61,46,0.18);
-      max-width: 280px;
-      border-left: 4px solid var(--ocra);
-    }
-    .mappa-nome {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; color: var(--marrone); margin-bottom: 8px;
-    }
-    .mappa-addr { font-size: 0.85rem; color: var(--testo-soft); line-height: 1.6; }
+    /* CHI SIAMO */
+    #chisiamo { background:var(--marrone); color:var(--bianco); }
+    #chisiamo .section-title { color:var(--ocra-light); }
+    #chisiamo .section-label { color:var(--ocra); }
+    #chisiamo .section-divider { background:var(--ocra); }
+    .chisiamo-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+    .chisiamo-testo p { font-size:1rem; line-height:1.9; color:rgba(255,255,255,.8); margin-bottom:16px; }
+    .chisiamo-valori { display:flex; flex-direction:column; gap:20px; }
+    .valore { display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,.06); padding:20px; border-radius:4px; border-left:3px solid var(--ocra); }
+    .valore-icon { font-size:1.6rem; flex-shrink:0; }
+    .valore-titolo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ocra-light); margin-bottom:4px; }
+    .valore-testo { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--testo);
-      color: rgba(255,255,255,0.5);
-      text-align: center; padding: 32px 40px;
-      font-size: 0.78rem; letter-spacing: 0.08em;
-    }
-    footer strong { color: var(--ocra-light); }
+    /* ORARI */
+    #orari { background:var(--bianco); }
+    .orari-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+    .orari-tabella { width:100%; border-collapse:collapse; }
+    .orari-tabella tr { border-bottom:1px solid var(--ocra-light); }
+    .orari-tabella td { padding:14px 0; font-size:.9rem; }
+    .orari-tabella td:first-child { color:var(--marrone); font-weight:500; }
+    .orari-tabella td:last-child { color:var(--testo-soft); text-align:right; }
+    .chiuso { color:var(--lotus)!important; font-style:italic; }
+    .contatti-lista { display:flex; flex-direction:column; gap:20px; }
+    .contatto-item { display:flex; align-items:center; gap:16px; }
+    .contatto-icon { width:44px; height:44px; border-radius:50%; background:var(--lotus-soft); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; border:1px solid var(--ocra-light); }
+    .contatto-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ocra); }
+    .contatto-valore { font-size:.95rem; color:var(--testo); margin-top:2px; }
+    .contatto-valore a { color:var(--marrone); text-decoration:none; }
+    .contatto-valore a:hover { color:var(--ocra); }
 
-    /* ── ANIMAZIONI ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* MAPPA */
+    #mappa { padding:0; }
+    .mappa-wrapper { position:relative; height:360px; overflow:hidden; }
+    .mappa-wrapper iframe { width:100%; height:100%; border:none; filter:sepia(20%) saturate(80%); }
+    .mappa-overlay { position:absolute; left:40px; top:50%; transform:translateY(-50%); background:var(--bianco); padding:28px 32px; border-radius:4px; box-shadow:0 12px 40px rgba(92,61,46,.18); max-width:280px; border-left:4px solid var(--ocra); }
+    .mappa-nome { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--marrone); margin-bottom:8px; }
+    .mappa-addr { font-size:.85rem; color:var(--testo-soft); line-height:1.6; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 0 20px; }
-      .nav-links { display: none; flex-direction: column; gap: 0;
-        position: fixed; top: 64px; left: 0; right: 0;
-        background: var(--crema); border-bottom: 1px solid var(--ocra-light);
-        padding: 16px 0;
-      }
-      .nav-links.open { display: flex; }
-      .nav-links a { padding: 12px 24px; display: block; }
-      .hamburger { display: flex; }
-      section { padding: 60px 20px; }
-      .chisiamo-grid, .orari-grid { grid-template-columns: 1fr; gap: 40px; }
-      .mappa-overlay { display: none; }
+    /* FOOTER */
+    footer { background:var(--testo); color:rgba(255,255,255,.5); text-align:center; padding:32px 40px; font-size:.78rem; letter-spacing:.08em; }
+    footer strong { color:var(--ocra-light); }
+
+    /* ANIMAZIONI */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      nav{padding:0 20px;}
+      .nav-links{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--crema);border-bottom:1px solid var(--ocra-light);padding:16px 0;}
+      .nav-links.open{display:flex;}
+      .nav-links a{padding:12px 24px;display:block;}
+      .hamburger{display:flex;}
+      section{padding:60px 20px;}
+      .chisiamo-grid,.orari-grid{grid-template-columns:1fr;gap:40px;}
+      .mappa-overlay{display:none;}
+      .modal-header{padding:16px 20px;}
+      .modal-body{padding:20px;}
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════════ NAVBAR ═══════════ -->
+<!-- NAVBAR -->
 <nav>
   <a href="#hero" class="nav-logo">Seconda Pelle</a>
   <ul class="nav-links" id="navLinks">
@@ -309,12 +210,10 @@
     <li><a href="#chisiamo">Chi siamo</a></li>
     <li><a href="#orari">Orari & Contatti</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
+<!-- HERO -->
 <section id="hero">
   <div class="hero-content">
     <span class="hero-badge">Sant'Agata sul Santerno</span>
@@ -332,27 +231,7 @@
   </div>
 </section>
 
-
-<!-- ═══════════ NOVITÀ ═══════════ -->
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  SEZIONE ULTIME USCITE — COME MODIFICARLA                   ║
-  ║                                                              ║
-  ║  Nel blocco <script> in fondo alla pagina trovi:            ║
-  ║    const NOVITA = [ ... ]                                    ║
-  ║                                                              ║
-  ║  Ogni articolo ha:                                           ║
-  ║    emoji: l'icona/emoji da mostrare come immagine           ║
-  ║    nuovo: true = mostra il badge "NUOVO", false = non mostra ║
-  ║    tag: la categoria (es. "Intimo", "Calzature"...)         ║
-  ║    nome: il nome del prodotto                               ║
-  ║    desc: breve descrizione                                  ║
-  ║                                                              ║
-  ║  Per aggiungere un prodotto: copia un blocco { ... },       ║
-  ║  incollalo e cambia i valori.                               ║
-  ║  Per rimuoverlo: cancella il blocco { ... } corrispondente. ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
+<!-- NOVITÀ -->
 <section id="novita">
   <div class="section-center">
     <p class="section-label">Ultime uscite</p>
@@ -362,23 +241,7 @@
   <div class="novita-grid" id="novitaGrid"></div>
 </section>
 
-
-<!-- ═══════════ PRODOTTI ═══════════ -->
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  SEZIONE CATEGORIE — COME MODIFICARLA                       ║
-  ║                                                              ║
-  ║  Nel blocco <script> in fondo alla pagina trovi:            ║
-  ║    const CATEGORIE = [ ... ]                                 ║
-  ║                                                              ║
-  ║  Ogni categoria ha:                                          ║
-  ║    icon: emoji dell'icona                                   ║
-  ║    nome: nome della categoria                               ║
-  ║    desc: breve descrizione                                  ║
-  ║                                                              ║
-  ║  Stessa logica di NOVITA per aggiungere/rimuovere.         ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
+<!-- PRODOTTI -->
 <section id="prodotti">
   <div class="section-center">
     <p class="section-label">Cosa trovi da noi</p>
@@ -388,62 +251,26 @@
   <div class="categorie-grid" id="categorieGrid"></div>
 </section>
 
-
-<!-- ═══════════ CHI SIAMO ═══════════ -->
+<!-- CHI SIAMO -->
 <section id="chisiamo">
   <div class="chisiamo-grid">
     <div class="chisiamo-testo reveal">
       <p class="section-label">Chi siamo</p>
       <h2 class="section-title">Il tuo negozio<br>di fiducia</h2>
       <div class="section-divider"></div>
-      <!--
-        ✏️ MODIFICA IL TESTO QUI SOTTO
-        Scrivi quello che vuoi tra i tag <p> e </p>
-      -->
+      <!-- ✏️ Modifica il testo qui -->
       <p>Seconda Pelle è il negozio di Sant'Agata sul Santerno dove comfort e qualità si incontrano ogni giorno. Il nostro nome dice tutto: vogliamo che ogni capo che indossi si senta come una seconda pelle.</p>
       <p>Trovi da noi una selezione curata di intimo, abbigliamento professionale, costumi, pigiami e molto altro — per ogni stagione e ogni esigenza.</p>
     </div>
     <div class="chisiamo-valori reveal">
-      <div class="valore">
-        <span class="valore-icon">🤝</span>
-        <div>
-          <div class="valore-titolo">Servizio personalizzato</div>
-          <div class="valore-testo">Ti aiutiamo a trovare esattamente quello che cerchi, con gentilezza e professionalità.</div>
-        </div>
-      </div>
-      <div class="valore">
-        <span class="valore-icon">✨</span>
-        <div>
-          <div class="valore-titolo">Qualità selezionata</div>
-          <div class="valore-testo">Scegliamo con cura i marchi e i prodotti che portiamo in negozio.</div>
-        </div>
-      </div>
-      <div class="valore">
-        <span class="valore-icon">🌿</span>
-        <div>
-          <div class="valore-titolo">Comfort prima di tutto</div>
-          <div class="valore-testo">Dal lavoro al riposo, ogni capo è pensato per farti stare bene.</div>
-        </div>
-      </div>
+      <div class="valore"><span class="valore-icon">🤝</span><div><div class="valore-titolo">Servizio personalizzato</div><div class="valore-testo">Ti aiutiamo a trovare esattamente quello che cerchi, con gentilezza e professionalità.</div></div></div>
+      <div class="valore"><span class="valore-icon">✨</span><div><div class="valore-titolo">Qualità selezionata</div><div class="valore-testo">Scegliamo con cura i marchi e i prodotti che portiamo in negozio.</div></div></div>
+      <div class="valore"><span class="valore-icon">🌿</span><div><div class="valore-titolo">Comfort prima di tutto</div><div class="valore-testo">Dal lavoro al riposo, ogni capo è pensato per farti stare bene.</div></div></div>
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════ ORARI & CONTATTI ═══════════ -->
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  ORARI — COME MODIFICARLI                                   ║
-  ║                                                              ║
-  ║  Nel blocco <script> in fondo alla pagina trovi:            ║
-  ║    const ORARI = [ ... ]                                     ║
-  ║                                                              ║
-  ║  Ogni riga ha:                                               ║
-  ║    giorno: nome del giorno                                  ║
-  ║    orario: testo orario (es. "9:00 – 12:30 / 15:30 – 19:00")║
-  ║    chiuso: true = mostra "Chiuso" in rosa, false = normale  ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
+<!-- ORARI & CONTATTI -->
 <section id="orari">
   <div class="orari-grid">
     <div class="reveal">
@@ -456,163 +283,237 @@
       <p class="section-label">Dove siamo</p>
       <h2 class="section-title">Contatti</h2>
       <div class="section-divider"></div>
-      <!--
-        ✏️ MODIFICA INDIRIZZO, TELEFONO, EMAIL QUI SOTTO
-      -->
       <div class="contatti-lista">
         <div class="contatto-item">
           <div class="contatto-icon">📍</div>
-          <div>
-            <div class="contatto-label">Indirizzo</div>
-            <!--  ✏️ Cambia l'indirizzo qui sotto  -->
-            <div class="contatto-valore">Via [Nome Via], [Numero]<br>48020 Sant'Agata sul Santerno (RA)</div>
-          </div>
+          <div><div class="contatto-label">Indirizzo</div>
+          <!-- ✏️ Modifica indirizzo -->
+          <div class="contatto-valore">Via [Nome Via], [Numero]<br>48020 Sant'Agata sul Santerno (RA)</div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">📞</div>
-          <div>
-            <div class="contatto-label">Telefono</div>
-            <!--  ✏️ Cambia il numero qui sotto (sia nell'href che nel testo)  -->
-            <div class="contatto-valore"><a href="tel:+39XXXXXXXXXX">+39 XXX XXX XXXX</a></div>
-          </div>
+          <div><div class="contatto-label">Telefono</div>
+          <!-- ✏️ Modifica numero (in entrambi i posti) -->
+          <div class="contatto-valore"><a href="tel:+39XXXXXXXXXX">+39 XXX XXX XXXX</a></div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">✉️</div>
-          <div>
-            <div class="contatto-label">Email</div>
-            <!--  ✏️ Cambia l'email qui sotto (sia nell'href che nel testo)  -->
-            <div class="contatto-valore"><a href="mailto:info@secondapelle.it">info@secondapelle.it</a></div>
-          </div>
+          <div><div class="contatto-label">Email</div>
+          <!-- ✏️ Modifica email (in entrambi i posti) -->
+          <div class="contatto-valore"><a href="mailto:info@secondapelle.it">info@secondapelle.it</a></div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">📸</div>
-          <div>
-            <div class="contatto-label">Instagram</div>
-            <!--  ✏️ Cambia il profilo Instagram qui sotto  -->
-            <div class="contatto-valore"><a href="https://instagram.com/secondapelle" target="_blank">@secondapelle</a></div>
-          </div>
+          <div><div class="contatto-label">Instagram</div>
+          <!-- ✏️ Modifica profilo Instagram -->
+          <div class="contatto-valore"><a href="https://instagram.com/secondapelle" target="_blank">@secondapelle</a></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ═══════════ MAPPA ═══════════ -->
+<!-- MAPPA -->
 <div id="mappa">
   <div class="mappa-wrapper">
-    <!--
-      ✏️ Per personalizzare la mappa:
-         Vai su maps.google.com → cerca il negozio → clicca "Condividi" → "Incorpora mappa"
-         Copia il codice <iframe ...> e incollalo al posto di quello qui sotto.
-    -->
-    <iframe
-      src="https://maps.google.com/maps?q=Sant'Agata+sul+Santerno&z=14&output=embed"
-      title="Mappa Seconda Pelle"
-      loading="lazy"
-    ></iframe>
+    <!-- ✏️ Incolla qui il tuo iframe di Google Maps -->
+    <iframe src="https://maps.google.com/maps?q=Sant'Agata+sul+Santerno&z=14&output=embed" title="Mappa" loading="lazy"></iframe>
     <div class="mappa-overlay">
       <div class="mappa-nome">Seconda Pelle</div>
-      <div class="mappa-addr">
-        Santerno Relax Store<br>
-        Sant'Agata sul Santerno (RA)
-      </div>
+      <div class="mappa-addr">Santerno Relax Store<br>Sant'Agata sul Santerno (RA)</div>
     </div>
   </div>
 </div>
 
-
-<!-- ═══════════ FOOTER ═══════════ -->
+<!-- FOOTER -->
 <footer>
   <p>© <span id="anno"></span> <strong>Seconda Pelle</strong> — Santerno Relax Store &nbsp;·&nbsp; Sant'Agata sul Santerno</p>
 </footer>
 
+<!-- MODALE CATALOGO -->
+<div class="modal-overlay" id="modalOverlay" onclick="chiudiModalSfondo(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-icon" id="mIcon"></span>
+        <div>
+          <div class="modal-title" id="mTitle"></div>
+          <div class="modal-desc" id="mDesc"></div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="chiudiModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     DATI DEL NEGOZIO — MODIFICA QUI PER AGGIORNARE IL SITO
-     (non serve toccare nient'altro!)
-═══════════════════════════════════════════════════════════════ -->
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="chiudiLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <div class="lightbox-caption" id="lbCap"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODIFICA SOLO QUESTA SEZIONE PER AGGIORNARE IL SITO
+═══════════════════════════════════════════════════════════ -->
 <script>
+/*
+╔══════════════════════════════════════════════════════════════╗
+║  COME AGGIUNGERE LE FOTO                                     ║
+║                                                              ║
+║  1. Crea una cartella "img" nella stessa cartella del sito   ║
+║  2. Copia le tue foto dentro quella cartella                 ║
+║  3. Nel campo foto scrivi:  "img/nome-del-file.jpg"          ║
+║                                                              ║
+║  Se non hai ancora la foto, lascia  foto: ""                 ║
+║  e verrà mostrata un'emoji al suo posto.                     ║
+╚══════════════════════════════════════════════════════════════╝
+*/
 
-/* ──────────────────────────────────────────────────────────────
-   ✏️  ULTIME NOVITÀ
-   Aggiungi, rimuovi o modifica i prodotti qui sotto.
-   Copia un blocco { ... }, incollalo e cambia i valori.
-   ────────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────
+   ULTIME NOVITÀ
+   Aggiungi o rimuovi articoli copiando/cancellando blocchi { }
+   ────────────────────────────────────────────────────── */
 const NOVITA = [
   {
-    emoji:  "👙",
-    nuovo:  true,
-    tag:    "Costumi",
-    nome:   "Collezione Mare 2025",
-    desc:   "Nuovi arrivi per l'estate: bikini, interi e tankini nelle ultime tendenze."
+    foto:  "",              // ← es: "img/costume2025.jpg"
+    emoji: "👙",
+    nuovo: true,
+    tag:   "Costumi",
+    nome:  "Collezione Mare 2025",
+    desc:  "Nuovi arrivi per l'estate: bikini, interi e tankini nelle ultime tendenze."
   },
   {
-    emoji:  "🩲",
-    nuovo:  true,
-    tag:    "Intimo",
-    nome:   "Linea Comfort Premium",
-    desc:   "Intimo in cotone biologico, morbido e traspirante per tutto il giorno."
+    foto:  "",
+    emoji: "🩲",
+    nuovo: true,
+    tag:   "Intimo",
+    nome:  "Linea Comfort Premium",
+    desc:  "Intimo in cotone biologico, morbido e traspirante per tutto il giorno."
   },
   {
-    emoji:  "👨‍🍳",
-    nuovo:  false,
-    tag:    "Abbigliamento professionale",
-    nome:   "Divise da Cucina",
-    desc:   "Giacche, grembiuli e pantaloni da chef: pratici, resistenti, eleganti."
+    foto:  "",
+    emoji: "👨‍🍳",
+    nuovo: false,
+    tag:   "Divise da cucina",
+    nome:  "Giacche e Grembiuli Chef",
+    desc:  "Divise professionali per chi lavora in cucina: pratiche, resistenti, eleganti."
   },
   {
-    emoji:  "🌙",
-    nuovo:  true,
-    tag:    "Pigiami",
-    nome:   "Pigiami Relax Collection",
-    desc:   "Pigiami lunghi e corti per un riposo perfetto, in tessuti morbidissimi."
+    foto:  "",
+    emoji: "🌙",
+    nuovo: true,
+    tag:   "Pigiami",
+    nome:  "Pigiami Relax Collection",
+    desc:  "Pigiami lunghi e corti per un riposo perfetto, in tessuti morbidissimi."
   }
 ];
 
-/* ──────────────────────────────────────────────────────────────
-   ✏️  CATEGORIE PRODOTTI
-   Modifica i nomi, descrizioni o icone (emoji) delle categorie.
-   ────────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────
+   CATEGORIE + CATALOGO PRODOTTI
+   Ogni categoria ha un array "prodotti" con gli articoli.
+   Ogni prodotto ha: foto, emoji, nome, note, prezzo
+   Lascia prezzo: "" se non vuoi mostrare il prezzo.
+   ────────────────────────────────────────────────────── */
 const CATEGORIE = [
-  { icon: "🩱", nome: "Intimo",                    desc: "Reggiseni, slip, body e biancheria intima di qualità" },
-  { icon: "👟", nome: "Calzature",                  desc: "Scarpe comode ed eleganti per ogni occasione" },
-  { icon: "👨‍🍳", nome: "Divise da lavoro",           desc: "Abbigliamento professionale per cucina e settore ristorazione" },
-  { icon: "👙", nome: "Costumi da mare",             desc: "Bikini, interi, shorts e accessori per l'estate" },
-  { icon: "👕", nome: "Polo & T-shirt",              desc: "Basicità e stile per il tempo libero" },
-  { icon: "🛁", nome: "Accapatoi",                   desc: "Accapatoi soffici e assorbenti per il bagno o la spa" },
-  { icon: "🌙", nome: "Pigiami",                     desc: "Pigiami comodi per notti rilassanti" },
-  { icon: "🧥", nome: "Abbigliamento professionale", desc: "Capi da lavoro per ogni settore" }
+  {
+    icon: "🩱", nome: "Intimo", desc: "Reggiseni, slip, body e biancheria intima di qualità",
+    prodotti: [
+      { foto:"", emoji:"🩱", nome:"Reggiseno senza ferretti",  note:"Cotone biologico, taglie 1–5",  prezzo:"" },
+      { foto:"", emoji:"🩲", nome:"Slip uomo in cotone",       note:"Conf. 3 pezzi, varie taglie",   prezzo:"" },
+      { foto:"", emoji:"👙", nome:"Bikini donna push-up",      note:"Colorazioni pastello 2025",     prezzo:"" },
+      { foto:"", emoji:"🩳", nome:"Boxer uomo linea relax",    note:"Tessuto jersey morbido",        prezzo:"" }
+    ]
+  },
+  {
+    icon: "👟", nome: "Calzature", desc: "Scarpe comode ed eleganti per ogni occasione",
+    prodotti: [
+      { foto:"", emoji:"👟", nome:"Sneaker bassa unisex",    note:"Suola antiscivolo", prezzo:"" },
+      { foto:"", emoji:"🥿", nome:"Ballerina comfort donna", note:"Pelle morbida",     prezzo:"" },
+      { foto:"", emoji:"🥾", nome:"Scarpa da lavoro uomo",   note:"Punta rinforzata",  prezzo:"" }
+    ]
+  },
+  {
+    icon: "👨‍🍳", nome: "Divise da lavoro", desc: "Abbigliamento professionale per cucina e ristorazione",
+    prodotti: [
+      { foto:"", emoji:"👨‍🍳", nome:"Giacca da chef bianca",   note:"100% cotone, facile da lavare", prezzo:"" },
+      { foto:"", emoji:"👖",  nome:"Pantalone da cucina",     note:"Elastico in vita, colori vari", prezzo:"" },
+      { foto:"", emoji:"🧤",  nome:"Grembiule professionale", note:"Con tasche laterali",           prezzo:"" }
+    ]
+  },
+  {
+    icon: "👙", nome: "Costumi da mare", desc: "Bikini, interi, shorts e accessori per l'estate",
+    prodotti: [
+      { foto:"", emoji:"👙", nome:"Bikini triangolo",     note:"Nuovi colori estate 2025", prezzo:"" },
+      { foto:"", emoji:"🩱", nome:"Costume intero donna", note:"Modello sportivo",         prezzo:"" },
+      { foto:"", emoji:"🩳", nome:"Bermuda mare uomo",    note:"Tessuto quick-dry",        prezzo:"" }
+    ]
+  },
+  {
+    icon: "👕", nome: "Polo & T-shirt", desc: "Basicità e stile per il tempo libero",
+    prodotti: [
+      { foto:"", emoji:"👕", nome:"T-shirt basic unisex",   note:"100% cotone, 12 colori", prezzo:"" },
+      { foto:"", emoji:"👔", nome:"Polo piquet uomo",       note:"Colletto a costine",     prezzo:"" },
+      { foto:"", emoji:"👚", nome:"T-shirt donna scollo V", note:"Taglio slim fit",        prezzo:"" }
+    ]
+  },
+  {
+    icon: "🛁", nome: "Accapatoi", desc: "Accapatoi soffici e assorbenti per bagno o spa",
+    prodotti: [
+      { foto:"", emoji:"🛁", nome:"Accappatoio spugna adulto", note:"Vari colori, taglia unica", prezzo:"" },
+      { foto:"", emoji:"🧸", nome:"Accappatoio bambino",       note:"Con cappuccio, 2–10 anni",  prezzo:"" }
+    ]
+  },
+  {
+    icon: "🌙", nome: "Pigiami", desc: "Pigiami comodi per notti rilassanti",
+    prodotti: [
+      { foto:"", emoji:"🌙", nome:"Pigiama lungo donna",  note:"Fantasia floreale",     prezzo:"" },
+      { foto:"", emoji:"😴", nome:"Pigiama corto unisex", note:"Jersey leggero",        prezzo:"" },
+      { foto:"", emoji:"🧸", nome:"Pigiama bambino",      note:"Con stampe simpatiche", prezzo:"" }
+    ]
+  },
+  {
+    icon: "🧥", nome: "Abbigliamento professionale", desc: "Capi da lavoro per ogni settore",
+    prodotti: [
+      { foto:"", emoji:"🧥", nome:"Gilet da lavoro unisex", note:"Multi-tasca, resistente", prezzo:"" },
+      { foto:"", emoji:"👔", nome:"Camicia da lavoro",      note:"Stiratura facile",        prezzo:"" }
+    ]
+  }
 ];
 
-/* ──────────────────────────────────────────────────────────────
-   ✏️  ORARI DI APERTURA
-   Modifica gli orari o metti chiuso: true nei giorni di chiusura.
-   ────────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────
+   ORARI DI APERTURA
+   chiuso: true = mostra "Chiuso"
+   ────────────────────────────────────────────────────── */
 const ORARI = [
-  { giorno: "Lunedì",    orario: "9:00 – 12:30  /  15:30 – 19:00", chiuso: false },
-  { giorno: "Martedì",   orario: "9:00 – 12:30  /  15:30 – 19:00", chiuso: false },
-  { giorno: "Mercoledì", orario: "9:00 – 12:30",                    chiuso: false },
-  { giorno: "Giovedì",   orario: "9:00 – 12:30  /  15:30 – 19:00", chiuso: false },
-  { giorno: "Venerdì",   orario: "9:00 – 12:30  /  15:30 – 19:00", chiuso: false },
-  { giorno: "Sabato",    orario: "9:00 – 12:30  /  15:30 – 19:00", chiuso: false },
-  { giorno: "Domenica",  orario: "Chiuso",                           chiuso: true  }
+  { giorno:"Lunedì",    orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
+  { giorno:"Martedì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
+  { giorno:"Mercoledì", orario:"9:00 – 12:30",                    chiuso:false },
+  { giorno:"Giovedì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
+  { giorno:"Venerdì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
+  { giorno:"Sabato",    orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
+  { giorno:"Domenica",  orario:"Chiuso",                           chiuso:true  }
 ];
 
-
-/* ══════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    NON MODIFICARE OLTRE QUESTA RIGA
-   (codice che genera automaticamente le sezioni)
-══════════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 
-// Genera le card novità
-const novitaGrid = document.getElementById('novitaGrid');
+function mediaEl(foto, emoji, extraClass) {
+  if (foto && foto.trim()) return `<img src="${foto}" alt="" loading="lazy"${extraClass?' class="'+extraClass+'"':''}>`;
+  return `<span class="ef">${emoji}</span>`;
+}
+
+// Novità
+const ng = document.getElementById('novitaGrid');
 NOVITA.forEach(p => {
-  novitaGrid.innerHTML += `
+  ng.innerHTML += `
     <div class="novita-card reveal">
-      <div class="novita-img">${p.emoji}</div>
+      <div class="novita-img">${mediaEl(p.foto,p.emoji)}</div>
       <div class="novita-body">
-        ${p.nuovo ? '<span class="badge-nuovo">Nuovo</span>' : ''}
+        ${p.nuovo?'<span class="badge-nuovo">Nuovo</span>':''}
         <div class="novita-tag">${p.tag}</div>
         <div class="novita-name">${p.nome}</div>
         <div class="novita-desc">${p.desc}</div>
@@ -620,41 +521,92 @@ NOVITA.forEach(p => {
     </div>`;
 });
 
-// Genera le categorie prodotti
-const categorieGrid = document.getElementById('categorieGrid');
-CATEGORIE.forEach(c => {
-  categorieGrid.innerHTML += `
-    <div class="categoria-card reveal">
-      <span class="categoria-icon">${c.icon}</span>
-      <div class="categoria-nome">${c.nome}</div>
-      <div class="categoria-desc">${c.desc}</div>
-    </div>`;
+// Categorie
+const cg = document.getElementById('categorieGrid');
+CATEGORIE.forEach((c,i) => {
+  const el = document.createElement('div');
+  el.className = 'categoria-card reveal';
+  el.innerHTML = `<span class="categoria-icon">${c.icon}</span>
+    <div class="categoria-nome">${c.nome}</div>
+    <div class="categoria-desc">${c.desc}</div>
+    <div class="categoria-cta">Vedi catalogo →</div>`;
+  el.onclick = () => apriCatalogo(i);
+  cg.appendChild(el);
 });
 
-// Genera tabella orari
-const orariTabella = document.getElementById('orariTabella');
+// Orari
+const ot = document.getElementById('orariTabella');
 ORARI.forEach(o => {
-  orariTabella.innerHTML += `
-    <tr>
-      <td>${o.giorno}</td>
-      <td class="${o.chiuso ? 'chiuso' : ''}">${o.orario}</td>
-    </tr>`;
+  ot.innerHTML += `<tr><td>${o.giorno}</td><td class="${o.chiuso?'chiuso':''}">${o.orario}</td></tr>`;
 });
 
-// Anno automatico nel footer
 document.getElementById('anno').textContent = new Date().getFullYear();
 
-// Menu hamburger mobile
-function toggleMenu() {
-  document.getElementById('navLinks').classList.toggle('open');
+function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.1});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Modale
+function apriCatalogo(i) {
+  const c = CATEGORIE[i];
+  document.getElementById('mIcon').textContent  = c.icon;
+  document.getElementById('mTitle').textContent = c.nome;
+  document.getElementById('mDesc').textContent  = c.desc;
+  const body = document.getElementById('mBody');
+  if (!c.prodotti || !c.prodotti.length) {
+    body.innerHTML = `<div class="modal-empty">
+      <div class="mei">${c.icon}</div>
+      <p>Nessun prodotto ancora aggiunto per questa categoria.<br><br>
+      Apri <code>index.html</code> con un editor di testo, trova la categoria
+      <strong>${c.nome}</strong> e aggiungi gli articoli nella sezione <code>prodotti: [...]</code>.</p>
+    </div>`;
+  } else {
+    let h = '<div class="catalogo-grid">';
+    c.prodotti.forEach(p => {
+      const click = (p.foto && p.foto.trim())
+        ? `onclick="apriLightbox('${p.foto}','${p.nome.replace(/'/g,"\\'")}')"`
+        : '';
+      h += `<div class="catalogo-item${click?' clickable':''}" ${click}>
+        <div class="catalogo-foto">${mediaEl(p.foto,p.emoji)}</div>
+        <div class="catalogo-info">
+          <div class="catalogo-nome">${p.nome}</div>
+          ${p.note   ?`<div class="catalogo-note">${p.note}</div>`:''}
+          ${p.prezzo ?`<div class="catalogo-prezzo">${p.prezzo}</div>`:''}
+        </div>
+      </div>`;
+    });
+    h += '</div>';
+    body.innerHTML = h;
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function chiudiModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function chiudiModalSfondo(e) {
+  if (e.target === document.getElementById('modalOverlay')) chiudiModal();
 }
 
-// Animazione scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// Lightbox
+function apriLightbox(src, titolo) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lbCap').textContent = titolo;
+  document.getElementById('lightbox').classList.add('open');
+}
+function chiudiLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lbImg').src = '';
+}
 
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') { chiudiModal(); chiudiLightbox(); }
+});
 </script>
 </body>
 </html>
