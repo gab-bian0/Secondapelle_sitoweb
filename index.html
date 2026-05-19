@@ -363,14 +363,26 @@
 ╔══════════════════════════════════════════════════════════════╗
 ║  COME AGGIUNGERE LE FOTO                                     ║
 ║                                                              ║
-║  1. Crea una cartella "img" nella stessa cartella del sito   ║
-║  2. Copia le tue foto dentro quella cartella                 ║
-║  3. Nel campo foto scrivi:  "img/nome-del-file.jpg"          ║
+║  Su GitHub:                                                  ║
+║  1. Carica index.html nel tuo repository                     ║
+║  2. Crea una cartella "img" nello stesso repository          ║
+║  3. Carica le foto dentro la cartella "img"                  ║
+║  4. Nel campo foto scrivi SOLO il nome del file, es:         ║
+║       foto: "costume-blu.jpg"                                ║
+║                                                              ║
+║  Il sito aggiunge "img/" davanti da solo.                    ║
+║                                                              ║
+║  Se vuoi usare un link esterno (es. Imgur) incolla           ║
+║  direttamente l'URL completo:                                ║
+║       foto: "https://i.imgur.com/abcdef.jpg"                 ║
 ║                                                              ║
 ║  Se non hai ancora la foto, lascia  foto: ""                 ║
 ║  e verrà mostrata un'emoji al suo posto.                     ║
 ╚══════════════════════════════════════════════════════════════╝
 */
+
+// ✏️ Se cambi il nome della cartella foto, modificalo qui:
+const CARTELLA_FOTO = "img/";
 
 /* ──────────────────────────────────────────────────────
    ULTIME NOVITÀ
@@ -378,7 +390,7 @@
    ────────────────────────────────────────────────────── */
 const NOVITA = [
   {
-    foto:  "",              // ← es: "img/costume2025.jpg"
+    foto:  "",              // ← es: "costume2025.jpg"  oppure  "https://i.imgur.com/abc.jpg"
     emoji: "👙",
     nuovo: true,
     tag:   "Costumi",
@@ -402,7 +414,7 @@ const NOVITA = [
     desc:  "Divise professionali per chi lavora in cucina: pratiche, resistenti, eleganti."
   },
   {
-    foto:  "img/prova.jpeg",
+    foto:  "",
     emoji: "🌙",
     nuovo: true,
     tag:   "Pigiami",
@@ -415,6 +427,8 @@ const NOVITA = [
    CATEGORIE + CATALOGO PRODOTTI
    Ogni categoria ha un array "prodotti" con gli articoli.
    Ogni prodotto ha: foto, emoji, nome, note, prezzo
+   Nel campo "foto" scrivi solo il nome del file (es. "slip-bianco.jpg")
+   oppure un URL completo. Lascia "" se non hai ancora la foto.
    Lascia prezzo: "" se non vuoi mostrare il prezzo.
    ────────────────────────────────────────────────────── */
 const CATEGORIE = [
@@ -446,7 +460,7 @@ const CATEGORIE = [
   {
     icon: "👙", nome: "Costumi da mare", desc: "Bikini, interi, shorts e accessori per l'estate",
     prodotti: [
-      { foto:"img/prova.jpeg", emoji:"👙", nome:"Bikini triangolo",     note:"Nuovi colori estate 2025", prezzo:"" },
+      { foto:"", emoji:"👙", nome:"Bikini triangolo",     note:"Nuovi colori estate 2025", prezzo:"" },
       { foto:"", emoji:"🩱", nome:"Costume intero donna", note:"Modello sportivo",         prezzo:"" },
       { foto:"", emoji:"🩳", nome:"Bermuda mare uomo",    note:"Tessuto quick-dry",        prezzo:"" }
     ]
@@ -501,8 +515,15 @@ const ORARI = [
    NON MODIFICARE OLTRE QUESTA RIGA
 ══════════════════════════════════════════════════════ */
 
-function mediaEl(foto, emoji, extraClass) {
-  if (foto && foto.trim()) return `<img src="${foto}" alt="" loading="lazy"${extraClass?' class="'+extraClass+'"':''}>`;
+function resolvePhoto(foto) {
+  if (!foto || !foto.trim()) return '';
+  if (foto.startsWith('http://') || foto.startsWith('https://')) return foto;
+  return CARTELLA_FOTO + foto;
+}
+
+function mediaEl(foto, emoji) {
+  const src = resolvePhoto(foto);
+  if (src) return `<img src="${src}" alt="" loading="lazy">`;
   return `<span class="ef">${emoji}</span>`;
 }
 
@@ -568,7 +589,7 @@ function apriCatalogo(i) {
     let h = '<div class="catalogo-grid">';
     c.prodotti.forEach(p => {
       const click = (p.foto && p.foto.trim())
-        ? `onclick="apriLightbox('${p.foto}','${p.nome.replace(/'/g,"\\'")}')"`
+        ? `onclick="apriLightbox('${resolvePhoto(p.foto)}','${p.nome.replace(/'/g,"\\'")}')"`
         : '';
       h += `<div class="catalogo-item${click?' clickable':''}" ${click}>
         <div class="catalogo-foto">${mediaEl(p.foto,p.emoji)}</div>
