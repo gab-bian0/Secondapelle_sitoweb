@@ -94,6 +94,14 @@ const CATEGORIE = [
         "nome": "Boxer uomo linea relax",
         "note": "Tessuto jersey morbido",
         "prezzo": ""
+      },
+      {
+        "foto": "",
+        "emoji": "📦",
+        "nome": "nuovo test",
+        "note": "nidjnciunuiewueiuwnein",
+        "prezzo": "€ 472",
+        "nuovo": true
       }
     ]
   },
