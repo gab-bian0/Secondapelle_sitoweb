@@ -10,45 +10,45 @@ const CARTELLA_FOTO = "img/";
 
 // ── CONTATTI ──────────────────────────────────────
 const CONTATTI = {
-  "indirizzo": "Via S. Vitale, 8",
+  "indirizzo": "Via [Nome Via], [Numero]",
   "citta": "48020 Sant'Agata sul Santerno (RA)",
   "telefono": "0545916362",
-  "telefonoHref": "+39XXXXXXXXXX",
-  "email": "-",
-  "instagram": "@secondapelle_fashion_intimo",
-  "instagramUrl": "https://www.instagram.com/secondapelle_fashion_intimo?igsh=MWl5ZnlnN3NhNHRuNA=="
+  "telefonoHref": "0545916362",
+  "email": "info@secondapelle.it",
+  "instagram": "@secondapelle",
+  "instagramUrl": "https://instagram.com/secondapelle"
 };
 
 // ── ORARI ─────────────────────────────────────────
 const ORARI = [
   {
     "giorno": "Lunedì",
-    "orario": "8:30 – 12:30 / 15:00 – 19:00",
+    "orario": "9:00 – 12:30  /  15:30 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Martedì",
-    "orario": "15:00 – 19:00",
+    "orario": "9:00 – 12:30  /  15:30 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Mercoledì",
-    "orario": "8:30 – 12:30 / 15:00 – 19:00",
+    "orario": "9:00 – 12:30",
     "chiuso": false
   },
   {
     "giorno": "Giovedì",
-    "orario": "8:30 – 12:30 / 15:00 – 19:00",
+    "orario": "9:00 – 12:30  /  15:30 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Venerdì",
-    "orario": "8:30 – 12:30 / 15:00 – 19:00",
+    "orario": "9:00 – 12:30  /  15:30 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Sabato",
-    "orario": "8:30 – 12:30 / 15:00 – 19:00",
+    "orario": "9:00 – 12:30  /  15:30 – 19:00",
     "chiuso": false
   },
   {
