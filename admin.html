@@ -215,8 +215,7 @@
 
   <aside class="admin-sidebar">
     <nav class="sidebar-nav">
-      <div class="sidebar-item active" onclick="showTab('novita',this)"><span class="sidebar-icon">✨</span> Novità</div>
-      <div class="sidebar-item" onclick="showTab('catalogo',this)"><span class="sidebar-icon">📦</span> Catalogo</div>
+      <div class="sidebar-item active" onclick="showTab('catalogo',this)"><span class="sidebar-icon">📦</span> Catalogo</div>
       <div class="sidebar-item" onclick="showTab('orari',this)"><span class="sidebar-icon">🕐</span> Orari</div>
       <div class="sidebar-item" onclick="showTab('contatti',this)"><span class="sidebar-icon">📍</span> Contatti</div>
     </nav>
@@ -227,21 +226,11 @@
 
   <main class="admin-main">
 
-    <!-- TAB: NOVITÀ -->
-    <div class="tab-section active" id="tab-novita">
-      <div class="section-head">
-        <h2>✨ Novità</h2>
-        <p>Gestisci gli articoli in evidenza nella sezione "Le novità del momento"</p>
-      </div>
-      <div id="novitaList"></div>
-      <button class="btn-add" onclick="aggiungiNovita()">+ Aggiungi articolo</button>
-    </div>
-
     <!-- TAB: CATALOGO -->
-    <div class="tab-section" id="tab-catalogo">
+    <div class="tab-section active" id="tab-catalogo">
       <div class="section-head">
         <h2>📦 Catalogo prodotti</h2>
-        <p>Aggiungi o modifica i prodotti per ogni categoria</p>
+        <p>Aggiungi o modifica i prodotti. Attiva <strong>"Mostra nelle Novità"</strong> per far apparire un prodotto anche nella sezione in evidenza della homepage.</p>
       </div>
       <div id="catalogoList"></div>
     </div>
@@ -302,7 +291,7 @@
 
 // ── PASSWORD ─────────────────────────────────────────────────
 // ✏️ Cambia questa password come vuoi (una sola parola, no spazi)
-const PASSWORD = "Fullcounter.100";
+const PASSWORD = "secondapelle2025";
 
 function login() {
   if (document.getElementById('pwdInput').value === PASSWORD) {
@@ -327,11 +316,9 @@ let state = {};
 function initAdmin() {
   state = {
     contatti: JSON.parse(JSON.stringify(typeof CONTATTI!=='undefined' ? CONTATTI : {})),
-    novita:   JSON.parse(JSON.stringify(typeof NOVITA!=='undefined'   ? NOVITA   : [])),
     categorie:JSON.parse(JSON.stringify(typeof CATEGORIE!=='undefined'? CATEGORIE: [])),
     orari:    JSON.parse(JSON.stringify(typeof ORARI!=='undefined'    ? ORARI    : []))
   };
-  renderNovita();
   renderCatalogo();
   renderOrari();
   renderContatti();
@@ -560,9 +547,16 @@ function renderProdotti(ci) {
           <input type="text" value="${p.prezzo||''}" placeholder="€ 19,90" class="inp-prod-prezzo">
         </div>
       </div>
-      <div class="form-row full">
+      <div class="form-row" style="grid-template-columns:1fr auto;align-items:end;">
         <div class="field"><label>Note / descrizione breve</label>
           <input type="text" value="${p.note||''}" placeholder="Cotone biologico, taglie S–XL" class="inp-prod-note">
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <div class="toggle-row" style="margin:0;padding:10px 14px;background:var(--lotus-soft);border-radius:3px;border:1px solid var(--ocra-light);">
+            <input type="checkbox" ${p.nuovo?'checked':''} class="inp-prod-nuovo">
+            <label style="color:var(--marrone);font-weight:500;">✨ Mostra nelle Novità</label>
+          </div>
         </div>
       </div>`;
     el.appendChild(div);
@@ -594,6 +588,9 @@ function renderProdotti(ci) {
     });
     div.querySelector('.inp-prod-note').addEventListener('input', function() {
       state.categorie[ci].prodotti[pi].note = this.value;
+    });
+    div.querySelector('.inp-prod-nuovo').addEventListener('change', function() {
+      state.categorie[ci].prodotti[pi].nuovo = this.checked;
     });
 
     // Preview foto esistente
@@ -672,10 +669,9 @@ const CONTATTI = ${js(state.contatti)};
 // ── ORARI ─────────────────────────────────────────
 const ORARI = ${js(state.orari)};
 
-// ── NOVITÀ ────────────────────────────────────────
-const NOVITA = ${js(state.novita)};
-
 // ── CATEGORIE + CATALOGO ──────────────────────────
+// I prodotti con  nuovo: true  appaiono automaticamente
+// anche nella sezione "Le novità del momento"
 const CATEGORIE = ${js(state.categorie)};
 `;
 

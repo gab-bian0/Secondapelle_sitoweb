@@ -360,20 +360,28 @@ document.getElementById('ct-email').innerHTML     = `<a href="mailto:${C.email}"
 document.getElementById('ct-instagram').innerHTML = `<a href="${C.instagramUrl}" target="_blank">${C.instagram}</a>`;
 document.getElementById('mappa-addr').innerHTML   = `Santerno Relax Store<br>${C.citta}`;
 
-// Novità
+// Novità — filtrate automaticamente dai prodotti con nuovo: true
 const ng = document.getElementById('novitaGrid');
-NOVITA.forEach(p => {
-  ng.innerHTML += `
-    <div class="novita-card reveal">
-      <div class="novita-img">${mediaEl(p.foto,p.emoji)}</div>
-      <div class="novita-body">
-        ${p.nuovo?'<span class="badge-nuovo">Nuovo</span>':''}
-        <div class="novita-tag">${p.tag}</div>
-        <div class="novita-name">${p.nome}</div>
-        <div class="novita-desc">${p.desc}</div>
-      </div>
-    </div>`;
+const novitaSection = document.getElementById('novita');
+let novitaCount = 0;
+CATEGORIE.forEach(cat => {
+  (cat.prodotti || []).forEach(p => {
+    if (!p.nuovo) return;
+    novitaCount++;
+    ng.innerHTML += `
+      <div class="novita-card reveal">
+        <div class="novita-img">${mediaEl(p.foto, p.emoji)}</div>
+        <div class="novita-body">
+          <span class="badge-nuovo">Nuovo</span>
+          <div class="novita-tag">${cat.nome}</div>
+          <div class="novita-name">${p.nome}</div>
+          <div class="novita-desc">${p.note || ''}</div>
+        </div>
+      </div>`;
+  });
 });
+// Nasconde la sezione se non ci sono novità
+if (novitaCount === 0) novitaSection.style.display = 'none';
 
 // Categorie
 const cg = document.getElementById('categorieGrid');
