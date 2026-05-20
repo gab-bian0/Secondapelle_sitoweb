@@ -4,6 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Seconda Pelle – Santerno Relax Store</title>
+
+  <!-- ═══════════════════════════════════════════════
+       META TAG SOCIAL (Open Graph)
+       Controllano l'anteprima su WhatsApp, Facebook,
+       Telegram, LinkedIn ecc.
+       ✏️ Sostituisci "IL_TUO_USERNAME" con il nome
+          del tuo repository GitHub.
+  ═══════════════════════════════════════════════ -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://IL_TUO_USERNAME.github.io/">
+  <meta property="og:title"       content="Seconda Pelle – Santerno Relax Store">
+  <meta property="og:description" content="Una vasta scelta di prodotti per ogni sesso, età ed esigenza. Intimo, calzature, costumi, pigiami e abbigliamento professionale a Sant'Agata sul Santerno.">
+  <meta property="og:image"       content="https://IL_TUO_USERNAME.github.io/img/logo.png">
+  <meta property="og:locale"      content="it_IT">
+  <meta property="og:site_name"   content="Seconda Pelle">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Seconda Pelle – Santerno Relax Store">
+  <meta name="twitter:description" content="Una vasta scelta di prodotti per ogni sesso, età ed esigenza. Intimo, calzature, costumi, pigiami e abbigliamento professionale a Sant'Agata sul Santerno.">
+  <meta name="twitter:image"       content="https://IL_TUO_USERNAME.github.io/img/logo.png">
+
+  <!-- SEO base -->
+  <meta name="description" content="Una vasta scelta di prodotti per ogni sesso, età ed esigenza. Intimo, calzature, costumi, pigiami e abbigliamento professionale a Sant'Agata sul Santerno.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -23,7 +48,6 @@
     html { scroll-behavior:smooth; }
     body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--testo); overflow-x:hidden; }
 
-    /* NAVBAR */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
       background:rgba(250,246,240,0.93); backdrop-filter:blur(12px);
@@ -38,7 +62,6 @@
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
     .hamburger span { display:block; width:24px; height:2px; background:var(--marrone); }
 
-    /* HERO */
     #hero {
       min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
       text-align:center; position:relative; overflow:hidden; padding:80px 24px 60px;
@@ -62,7 +85,6 @@
     .btn-outline { border:1px solid rgba(255,255,255,.5); color:var(--bianco); background:transparent; }
     .btn-outline:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); }
 
-    /* COMUNI */
     section { padding:80px 40px; }
     .section-label { font-size:.7rem; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra); margin-bottom:10px; }
     .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--marrone); line-height:1.2; }
@@ -70,7 +92,6 @@
     .section-center { text-align:center; }
     .section-center .section-divider { margin:20px auto 40px; }
 
-    /* NOVITÀ */
     #novita { background:var(--bianco); }
     .novita-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:28px; }
     .novita-card { background:var(--crema); border:1px solid var(--ocra-light); border-radius:4px; overflow:hidden; transition:transform .3s,box-shadow .3s; }
@@ -85,7 +106,6 @@
     .novita-desc { font-size:.82rem; color:var(--testo-soft); line-height:1.6; }
     .badge-nuovo { display:inline-block; background:var(--lotus); color:var(--marrone); font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; padding:3px 10px; border-radius:2px; margin-bottom:8px; }
 
-    /* PRODOTTI */
     #prodotti { background:var(--lotus-soft); }
     .categorie-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:20px; }
     .categoria-card { background:var(--bianco); border-radius:4px; padding:32px 24px; text-align:center; border-bottom:3px solid var(--ocra-light); transition:border-color .3s,transform .3s,box-shadow .3s; cursor:pointer; }
@@ -95,7 +115,6 @@
     .categoria-desc { font-size:.78rem; color:var(--testo-soft); margin-top:6px; line-height:1.5; }
     .categoria-cta { margin-top:14px; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ocra); font-weight:500; }
 
-    /* MODALE */
     .modal-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(30,18,10,.78); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
     .modal-overlay.open { display:flex; }
     .modal { background:var(--crema); border-radius:6px; max-width:920px; width:100%; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 32px 80px rgba(30,18,10,.4); animation:modalIn .35s ease; }
@@ -104,18 +123,13 @@
     .modal-title-wrap { display:flex; align-items:center; gap:14px; }
     .modal-icon { font-size:1.8rem; }
     .modal-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--marrone); }
-    .modal-desc { font-size:.82rem; color:var(--testo-soft); margin-top:2px; }
-    .modal-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--ocra-light); background:transparent; cursor:pointer; font-size:1.1rem; color:var(--testo-soft); display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+    .modal-desc-hdr { font-size:.82rem; color:var(--testo-soft); margin-top:2px; }
+    .modal-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--ocra-light); background:transparent; cursor:pointer; font-size:1.1rem; color:var(--testo-soft); display:flex; align-items:center; justify-content:center; transition:all .2s; }
     .modal-close:hover { background:var(--ocra); color:var(--bianco); border-color:var(--ocra); }
     .modal-body { padding:32px; overflow-y:auto; flex:1; }
-
-    /* Stato vuoto */
     .modal-empty { text-align:center; padding:60px 20px; color:var(--testo-soft); }
     .modal-empty .mei { font-size:3rem; margin-bottom:16px; }
     .modal-empty p { font-size:.9rem; line-height:1.8; }
-    .modal-empty code { background:var(--ocra-light); padding:2px 8px; border-radius:3px; font-size:.8rem; color:var(--marrone); }
-
-    /* Griglia catalogo */
     .catalogo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; }
     .catalogo-item { border-radius:4px; overflow:hidden; background:var(--bianco); border:1px solid var(--ocra-light); transition:transform .3s,box-shadow .3s; }
     .catalogo-item.clickable { cursor:pointer; }
@@ -129,7 +143,6 @@
     .catalogo-note { font-size:.78rem; color:var(--testo-soft); line-height:1.5; }
     .catalogo-prezzo { font-size:.85rem; font-weight:500; color:var(--ocra); margin-top:6px; }
 
-    /* LIGHTBOX */
     .lightbox { display:none; position:fixed; inset:0; z-index:900; background:rgba(10,5,0,.93); align-items:center; justify-content:center; }
     .lightbox.open { display:flex; }
     .lightbox-img { max-width:90vw; max-height:88vh; object-fit:contain; border-radius:3px; }
@@ -137,7 +150,6 @@
     .lightbox-close:hover { opacity:1; }
     .lightbox-caption { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.7); font-size:.85rem; }
 
-    /* CHI SIAMO */
     #chisiamo { background:var(--marrone); color:var(--bianco); }
     #chisiamo .section-title { color:var(--ocra-light); }
     #chisiamo .section-label { color:var(--ocra); }
@@ -150,7 +162,6 @@
     .valore-titolo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ocra-light); margin-bottom:4px; }
     .valore-testo { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
 
-    /* ORARI */
     #orari { background:var(--bianco); }
     .orari-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
     .orari-tabella { width:100%; border-collapse:collapse; }
@@ -167,7 +178,6 @@
     .contatto-valore a { color:var(--marrone); text-decoration:none; }
     .contatto-valore a:hover { color:var(--ocra); }
 
-    /* MAPPA */
     #mappa { padding:0; }
     .mappa-wrapper { position:relative; height:360px; overflow:hidden; }
     .mappa-wrapper iframe { width:100%; height:100%; border:none; filter:sepia(20%) saturate(80%); }
@@ -175,16 +185,13 @@
     .mappa-nome { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--marrone); margin-bottom:8px; }
     .mappa-addr { font-size:.85rem; color:var(--testo-soft); line-height:1.6; }
 
-    /* FOOTER */
     footer { background:var(--testo); color:rgba(255,255,255,.5); text-align:center; padding:32px 40px; font-size:.78rem; letter-spacing:.08em; }
     footer strong { color:var(--ocra-light); }
 
-    /* ANIMAZIONI */
     @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
     .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* RESPONSIVE */
     @media(max-width:768px){
       nav{padding:0 20px;}
       .nav-links{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--crema);border-bottom:1px solid var(--ocra-light);padding:16px 0;}
@@ -201,7 +208,6 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <nav>
   <a href="#hero" class="nav-logo">Seconda Pelle</a>
   <ul class="nav-links" id="navLinks">
@@ -213,7 +219,6 @@
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-content">
     <span class="hero-badge">Sant'Agata sul Santerno</span>
@@ -225,13 +230,10 @@
     </div>
   </div>
   <div class="hero-wave">
-    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#faf6f0"/>
-    </svg>
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#faf6f0"/></svg>
   </div>
 </section>
 
-<!-- NOVITÀ -->
 <section id="novita">
   <div class="section-center">
     <p class="section-label">Ultime uscite</p>
@@ -241,7 +243,6 @@
   <div class="novita-grid" id="novitaGrid"></div>
 </section>
 
-<!-- PRODOTTI -->
 <section id="prodotti">
   <div class="section-center">
     <p class="section-label">Cosa trovi da noi</p>
@@ -251,14 +252,12 @@
   <div class="categorie-grid" id="categorieGrid"></div>
 </section>
 
-<!-- CHI SIAMO -->
 <section id="chisiamo">
   <div class="chisiamo-grid">
     <div class="chisiamo-testo reveal">
       <p class="section-label">Chi siamo</p>
       <h2 class="section-title">Il tuo negozio<br>di fiducia</h2>
       <div class="section-divider"></div>
-      <!-- ✏️ Modifica il testo qui -->
       <p>Seconda Pelle è il negozio di Sant'Agata sul Santerno dove comfort e qualità si incontrano ogni giorno. Il nostro nome dice tutto: vogliamo che ogni capo che indossi si senta come una seconda pelle.</p>
       <p>Trovi da noi una selezione curata di intimo, abbigliamento professionale, costumi, pigiami e molto altro — per ogni stagione e ogni esigenza.</p>
     </div>
@@ -270,7 +269,6 @@
   </div>
 </section>
 
-<!-- ORARI & CONTATTI -->
 <section id="orari">
   <div class="orari-grid">
     <div class="reveal">
@@ -286,46 +284,35 @@
       <div class="contatti-lista">
         <div class="contatto-item">
           <div class="contatto-icon">📍</div>
-          <div><div class="contatto-label">Indirizzo</div>
-          <!-- ✏️ Modifica indirizzo -->
-          <div class="contatto-valore">Via [Nome Via], [Numero]<br>48020 Sant'Agata sul Santerno (RA)</div></div>
+          <div><div class="contatto-label">Indirizzo</div><div class="contatto-valore" id="ct-indirizzo"></div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">📞</div>
-          <div><div class="contatto-label">Telefono</div>
-          <!-- ✏️ Modifica numero (in entrambi i posti) -->
-          <div class="contatto-valore"><a href="tel:+39XXXXXXXXXX">+39 XXX XXX XXXX</a></div></div>
+          <div><div class="contatto-label">Telefono</div><div class="contatto-valore" id="ct-telefono"></div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">✉️</div>
-          <div><div class="contatto-label">Email</div>
-          <!-- ✏️ Modifica email (in entrambi i posti) -->
-          <div class="contatto-valore"><a href="mailto:info@secondapelle.it">info@secondapelle.it</a></div></div>
+          <div><div class="contatto-label">Email</div><div class="contatto-valore" id="ct-email"></div></div>
         </div>
         <div class="contatto-item">
           <div class="contatto-icon">📸</div>
-          <div><div class="contatto-label">Instagram</div>
-          <!-- ✏️ Modifica profilo Instagram -->
-          <div class="contatto-valore"><a href="https://instagram.com/secondapelle" target="_blank">@secondapelle</a></div></div>
+          <div><div class="contatto-label">Instagram</div><div class="contatto-valore" id="ct-instagram"></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MAPPA -->
 <div id="mappa">
   <div class="mappa-wrapper">
-    <!-- ✏️ Incolla qui il tuo iframe di Google Maps -->
     <iframe src="https://maps.google.com/maps?q=Sant'Agata+sul+Santerno&z=14&output=embed" title="Mappa" loading="lazy"></iframe>
     <div class="mappa-overlay">
       <div class="mappa-nome">Seconda Pelle</div>
-      <div class="mappa-addr">Santerno Relax Store<br>Sant'Agata sul Santerno (RA)</div>
+      <div class="mappa-addr" id="mappa-addr"></div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <p>© <span id="anno"></span> <strong>Seconda Pelle</strong> — Santerno Relax Store &nbsp;·&nbsp; Sant'Agata sul Santerno</p>
 </footer>
@@ -336,10 +323,7 @@
     <div class="modal-header">
       <div class="modal-title-wrap">
         <span class="modal-icon" id="mIcon"></span>
-        <div>
-          <div class="modal-title" id="mTitle"></div>
-          <div class="modal-desc" id="mDesc"></div>
-        </div>
+        <div><div class="modal-title" id="mTitle"></div><div class="modal-desc-hdr" id="mDesc"></div></div>
       </div>
       <button class="modal-close" onclick="chiudiModal()">✕</button>
     </div>
@@ -354,178 +338,27 @@
   <div class="lightbox-caption" id="lbCap"></div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════════════
-     MODIFICA SOLO QUESTA SEZIONE PER AGGIORNARE IL SITO
-═══════════════════════════════════════════════════════════ -->
+<!-- Dati del negozio (modificati tramite admin.html) -->
+<script src="dati.js"></script>
 <script>
-/*
-╔══════════════════════════════════════════════════════════════╗
-║  COME AGGIUNGERE LE FOTO                                     ║
-║                                                              ║
-║  Su GitHub:                                                  ║
-║  1. Carica index.html nel tuo repository                     ║
-║  2. Crea una cartella "img" nello stesso repository          ║
-║  3. Carica le foto dentro la cartella "img"                  ║
-║  4. Nel campo foto scrivi SOLO il nome del file, es:         ║
-║       foto: "costume-blu.jpg"                                ║
-║                                                              ║
-║  Il sito aggiunge "img/" davanti da solo.                    ║
-║                                                              ║
-║  Se vuoi usare un link esterno (es. Imgur) incolla           ║
-║  direttamente l'URL completo:                                ║
-║       foto: "https://i.imgur.com/abcdef.jpg"                 ║
-║                                                              ║
-║  Se non hai ancora la foto, lascia  foto: ""                 ║
-║  e verrà mostrata un'emoji al suo posto.                     ║
-╚══════════════════════════════════════════════════════════════╝
-*/
-
-// ✏️ Se cambi il nome della cartella foto, modificalo qui:
-const CARTELLA_FOTO = "img/";
-
-/* ──────────────────────────────────────────────────────
-   ULTIME NOVITÀ
-   Aggiungi o rimuovi articoli copiando/cancellando blocchi { }
-   ────────────────────────────────────────────────────── */
-const NOVITA = [
-  {
-    foto:  "prova.jpeg",              // ← es: "costume2025.jpg"  oppure  "https://i.imgur.com/abc.jpg"
-    emoji: "👙",
-    nuovo: true,
-    tag:   "Costumi",
-    nome:  "Collezione Mare 2025",
-    desc:  "Nuovi arrivi per l'estate: bikini, interi e tankini nelle ultime tendenze."
-  },
-  {
-    foto:  "",
-    emoji: "🩲",
-    nuovo: true,
-    tag:   "Intimo",
-    nome:  "Linea Comfort Premium",
-    desc:  "Intimo in cotone biologico, morbido e traspirante per tutto il giorno."
-  },
-  {
-    foto:  "",
-    emoji: "👨‍🍳",
-    nuovo: false,
-    tag:   "Divise da cucina",
-    nome:  "Giacche e Grembiuli Chef",
-    desc:  "Divise professionali per chi lavora in cucina: pratiche, resistenti, eleganti."
-  },
-  {
-    foto:  "",
-    emoji: "🌙",
-    nuovo: true,
-    tag:   "Pigiami",
-    nome:  "Pigiami Relax Collection",
-    desc:  "Pigiami lunghi e corti per un riposo perfetto, in tessuti morbidissimi."
-  }
-];
-
-/* ──────────────────────────────────────────────────────
-   CATEGORIE + CATALOGO PRODOTTI
-   Ogni categoria ha un array "prodotti" con gli articoli.
-   Ogni prodotto ha: foto, emoji, nome, note, prezzo
-   Nel campo "foto" scrivi solo il nome del file (es. "slip-bianco.jpg")
-   oppure un URL completo. Lascia "" se non hai ancora la foto.
-   Lascia prezzo: "" se non vuoi mostrare il prezzo.
-   ────────────────────────────────────────────────────── */
-const CATEGORIE = [
-  {
-    icon: "🩱", nome: "Intimo", desc: "Reggiseni, slip, body e biancheria intima di qualità",
-    prodotti: [
-      { foto:"", emoji:"🩱", nome:"Reggiseno senza ferretti",  note:"Cotone biologico, taglie 1–5",  prezzo:"" },
-      { foto:"", emoji:"🩲", nome:"Slip uomo in cotone",       note:"Conf. 3 pezzi, varie taglie",   prezzo:"" },
-      { foto:"", emoji:"👙", nome:"Bikini donna push-up",      note:"Colorazioni pastello 2025",     prezzo:"" },
-      { foto:"", emoji:"🩳", nome:"Boxer uomo linea relax",    note:"Tessuto jersey morbido",        prezzo:"" }
-    ]
-  },
-  {
-    icon: "👟", nome: "Calzature", desc: "Scarpe comode ed eleganti per ogni occasione",
-    prodotti: [
-      { foto:"", emoji:"👟", nome:"Sneaker bassa unisex",    note:"Suola antiscivolo", prezzo:"" },
-      { foto:"", emoji:"🥿", nome:"Ballerina comfort donna", note:"Pelle morbida",     prezzo:"" },
-      { foto:"", emoji:"🥾", nome:"Scarpa da lavoro uomo",   note:"Punta rinforzata",  prezzo:"" }
-    ]
-  },
-  {
-    icon: "👨‍🍳", nome: "Divise da lavoro", desc: "Abbigliamento professionale per cucina e ristorazione",
-    prodotti: [
-      { foto:"", emoji:"👨‍🍳", nome:"Giacca da chef bianca",   note:"100% cotone, facile da lavare", prezzo:"" },
-      { foto:"", emoji:"👖",  nome:"Pantalone da cucina",     note:"Elastico in vita, colori vari", prezzo:"" },
-      { foto:"", emoji:"🧤",  nome:"Grembiule professionale", note:"Con tasche laterali",           prezzo:"" }
-    ]
-  },
-  {
-    icon: "👙", nome: "Costumi da mare", desc: "Bikini, interi, shorts e accessori per l'estate",
-    prodotti: [
-      { foto:"", emoji:"👙", nome:"Bikini triangolo",     note:"Nuovi colori estate 2025", prezzo:"" },
-      { foto:"", emoji:"🩱", nome:"Costume intero donna", note:"Modello sportivo",         prezzo:"" },
-      { foto:"", emoji:"🩳", nome:"Bermuda mare uomo",    note:"Tessuto quick-dry",        prezzo:"" }
-    ]
-  },
-  {
-    icon: "👕", nome: "Polo & T-shirt", desc: "Basicità e stile per il tempo libero",
-    prodotti: [
-      { foto:"", emoji:"👕", nome:"T-shirt basic unisex",   note:"100% cotone, 12 colori", prezzo:"" },
-      { foto:"", emoji:"👔", nome:"Polo piquet uomo",       note:"Colletto a costine",     prezzo:"" },
-      { foto:"", emoji:"👚", nome:"T-shirt donna scollo V", note:"Taglio slim fit",        prezzo:"" }
-    ]
-  },
-  {
-    icon: "🛁", nome: "Accapatoi", desc: "Accapatoi soffici e assorbenti per bagno o spa",
-    prodotti: [
-      { foto:"", emoji:"🛁", nome:"Accappatoio spugna adulto", note:"Vari colori, taglia unica", prezzo:"" },
-      { foto:"", emoji:"🧸", nome:"Accappatoio bambino",       note:"Con cappuccio, 2–10 anni",  prezzo:"" }
-    ]
-  },
-  {
-    icon: "🌙", nome: "Pigiami", desc: "Pigiami comodi per notti rilassanti",
-    prodotti: [
-      { foto:"", emoji:"🌙", nome:"Pigiama lungo donna",  note:"Fantasia floreale",     prezzo:"" },
-      { foto:"", emoji:"😴", nome:"Pigiama corto unisex", note:"Jersey leggero",        prezzo:"" },
-      { foto:"", emoji:"🧸", nome:"Pigiama bambino",      note:"Con stampe simpatiche", prezzo:"" }
-    ]
-  },
-  {
-    icon: "🧥", nome: "Abbigliamento professionale", desc: "Capi da lavoro per ogni settore",
-    prodotti: [
-      { foto:"", emoji:"🧥", nome:"Gilet da lavoro unisex", note:"Multi-tasca, resistente", prezzo:"" },
-      { foto:"", emoji:"👔", nome:"Camicia da lavoro",      note:"Stiratura facile",        prezzo:"" }
-    ]
-  }
-];
-
-/* ──────────────────────────────────────────────────────
-   ORARI DI APERTURA
-   chiuso: true = mostra "Chiuso"
-   ────────────────────────────────────────────────────── */
-const ORARI = [
-  { giorno:"Lunedì",    orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
-  { giorno:"Martedì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
-  { giorno:"Mercoledì", orario:"9:00 – 12:30",                    chiuso:false },
-  { giorno:"Giovedì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
-  { giorno:"Venerdì",   orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
-  { giorno:"Sabato",    orario:"9:00 – 12:30  /  15:30 – 19:00", chiuso:false },
-  { giorno:"Domenica",  orario:"Chiuso",                           chiuso:true  }
-];
-
-/* ══════════════════════════════════════════════════════
-   NON MODIFICARE OLTRE QUESTA RIGA
-══════════════════════════════════════════════════════ */
-
 function resolvePhoto(foto) {
   if (!foto || !foto.trim()) return '';
   if (foto.startsWith('http://') || foto.startsWith('https://')) return foto;
   return CARTELLA_FOTO + foto;
 }
-
 function mediaEl(foto, emoji) {
   const src = resolvePhoto(foto);
   if (src) return `<img src="${src}" alt="" loading="lazy">`;
   return `<span class="ef">${emoji}</span>`;
 }
+
+// Contatti
+const C = CONTATTI;
+document.getElementById('ct-indirizzo').innerHTML = `${C.indirizzo}<br>${C.citta}`;
+document.getElementById('ct-telefono').innerHTML  = `<a href="tel:${C.telefonoHref}">${C.telefono}</a>`;
+document.getElementById('ct-email').innerHTML     = `<a href="mailto:${C.email}">${C.email}</a>`;
+document.getElementById('ct-instagram').innerHTML = `<a href="${C.instagramUrl}" target="_blank">${C.instagram}</a>`;
+document.getElementById('mappa-addr').innerHTML   = `Santerno Relax Store<br>${C.citta}`;
 
 // Novità
 const ng = document.getElementById('novitaGrid');
@@ -562,72 +395,44 @@ ORARI.forEach(o => {
 });
 
 document.getElementById('anno').textContent = new Date().getFullYear();
-
 function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
 
-// Reveal
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:.1});
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-// Modale
 function apriCatalogo(i) {
   const c = CATEGORIE[i];
-  document.getElementById('mIcon').textContent  = c.icon;
+  document.getElementById('mIcon').textContent = c.icon;
   document.getElementById('mTitle').textContent = c.nome;
   document.getElementById('mDesc').textContent  = c.desc;
   const body = document.getElementById('mBody');
   if (!c.prodotti || !c.prodotti.length) {
-    body.innerHTML = `<div class="modal-empty">
-      <div class="mei">${c.icon}</div>
-      <p>Nessun prodotto ancora aggiunto per questa categoria.<br><br>
-      Apri <code>index.html</code> con un editor di testo, trova la categoria
-      <strong>${c.nome}</strong> e aggiungi gli articoli nella sezione <code>prodotti: [...]</code>.</p>
-    </div>`;
+    body.innerHTML = `<div class="modal-empty"><div class="mei">${c.icon}</div><p>Nessun prodotto ancora aggiunto per questa categoria.<br>Usa il pannello admin per aggiungere articoli.</p></div>`;
   } else {
     let h = '<div class="catalogo-grid">';
     c.prodotti.forEach(p => {
-      const click = (p.foto && p.foto.trim())
-        ? `onclick="apriLightbox('${resolvePhoto(p.foto)}','${p.nome.replace(/'/g,"\\'")}')"`
-        : '';
-      h += `<div class="catalogo-item${click?' clickable':''}" ${click}>
+      const src = resolvePhoto(p.foto);
+      const click = src ? `onclick="apriLightbox('${src}','${p.nome.replace(/'/g,"\\'")}')"` : '';
+      h += `<div class="catalogo-item${src?' clickable':''}" ${click}>
         <div class="catalogo-foto">${mediaEl(p.foto,p.emoji)}</div>
         <div class="catalogo-info">
           <div class="catalogo-nome">${p.nome}</div>
           ${p.note   ?`<div class="catalogo-note">${p.note}</div>`:''}
           ${p.prezzo ?`<div class="catalogo-prezzo">${p.prezzo}</div>`:''}
-        </div>
-      </div>`;
+        </div></div>`;
     });
-    h += '</div>';
-    body.innerHTML = h;
+    body.innerHTML = h + '</div>';
   }
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-function chiudiModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function chiudiModalSfondo(e) {
-  if (e.target === document.getElementById('modalOverlay')) chiudiModal();
-}
-
-// Lightbox
-function apriLightbox(src, titolo) {
-  document.getElementById('lbImg').src = src;
-  document.getElementById('lbCap').textContent = titolo;
-  document.getElementById('lightbox').classList.add('open');
-}
-function chiudiLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.getElementById('lbImg').src = '';
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape') { chiudiModal(); chiudiLightbox(); }
-});
+function chiudiModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow=''; }
+function chiudiModalSfondo(e) { if(e.target===document.getElementById('modalOverlay')) chiudiModal(); }
+function apriLightbox(src,titolo) { document.getElementById('lbImg').src=src; document.getElementById('lbCap').textContent=titolo; document.getElementById('lightbox').classList.add('open'); }
+function chiudiLightbox() { document.getElementById('lightbox').classList.remove('open'); document.getElementById('lbImg').src=''; }
+document.addEventListener('keydown', e => { if(e.key==='Escape'){chiudiModal();chiudiLightbox();} });
 </script>
 </body>
 </html>

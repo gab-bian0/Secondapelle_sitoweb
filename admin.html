@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin – Seconda Pelle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --marrone:#5c3d2e; --ocra:#c8a84b; --ocra-light:#e8d49a;
+      --lotus:#d4a5a5; --lotus-soft:#f5ece8; --crema:#faf6f0;
+      --bianco:#ffffff; --testo:#3a2a1e; --testo-soft:#7a6555;
+      --verde:#4caf82; --rosso:#c0392b; --sidebar:240px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--testo);min-height:100vh;}
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(160deg,var(--marrone) 0%,#8b5e3c 50%,var(--ocra) 100%);
+    }
+    .login-box {
+      background:var(--bianco); border-radius:8px; padding:48px 40px; width:360px;
+      box-shadow:0 24px 60px rgba(30,15,5,.3); text-align:center;
+    }
+    .login-logo { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:var(--marrone); letter-spacing:.1em; margin-bottom:6px; }
+    .login-sub { font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ocra); margin-bottom:32px; }
+    .login-box input {
+      width:100%; padding:12px 16px; border:1px solid var(--ocra-light); border-radius:3px;
+      font-family:'Jost',sans-serif; font-size:.95rem; background:var(--crema);
+      color:var(--testo); margin-bottom:16px; outline:none; transition:border-color .2s;
+    }
+    .login-box input:focus { border-color:var(--ocra); }
+    .login-box button {
+      width:100%; padding:13px; background:var(--marrone); color:var(--bianco);
+      border:none; border-radius:3px; font-family:'Jost',sans-serif; font-size:.85rem;
+      font-weight:500; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:background .2s;
+    }
+    .login-box button:hover { background:var(--ocra); }
+    .login-error { color:var(--rosso); font-size:.82rem; margin-top:10px; display:none; }
+
+    /* ── LAYOUT ADMIN ── */
+    #adminPanel { display:none; min-height:100vh; }
+    .admin-header {
+      position:fixed; top:0; left:0; right:0; height:56px; z-index:100;
+      background:var(--marrone); display:flex; align-items:center; justify-content:space-between; padding:0 24px;
+    }
+    .admin-brand { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--ocra-light); letter-spacing:.1em; }
+    .admin-brand span { font-size:.7rem; color:rgba(255,255,255,.5); font-family:'Jost',sans-serif; letter-spacing:.15em; text-transform:uppercase; margin-left:10px; }
+    .btn-logout { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:rgba(255,255,255,.7); padding:6px 14px; border-radius:3px; cursor:pointer; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; font-family:'Jost',sans-serif; transition:all .2s; }
+    .btn-logout:hover { background:rgba(255,255,255,.2); }
+
+    .admin-sidebar {
+      position:fixed; top:56px; left:0; bottom:0; width:var(--sidebar);
+      background:var(--bianco); border-right:1px solid var(--ocra-light);
+      display:flex; flex-direction:column; overflow-y:auto; z-index:50;
+    }
+    .sidebar-nav { padding:16px 0; flex:1; }
+    .sidebar-item {
+      display:flex; align-items:center; gap:12px; padding:12px 20px;
+      font-size:.85rem; font-weight:500; color:var(--testo-soft); cursor:pointer;
+      border-left:3px solid transparent; transition:all .2s; text-decoration:none;
+    }
+    .sidebar-item:hover { color:var(--marrone); background:var(--crema); }
+    .sidebar-item.active { color:var(--marrone); border-left-color:var(--ocra); background:var(--lotus-soft); font-weight:600; }
+    .sidebar-icon { font-size:1.1rem; width:20px; text-align:center; }
+    .sidebar-footer { padding:16px 20px; border-top:1px solid var(--ocra-light); }
+
+    .admin-main { margin-left:var(--sidebar); margin-top:56px; padding:32px; min-height:calc(100vh - 56px); }
+
+    /* ── SEZIONI ── */
+    .tab-section { display:none; }
+    .tab-section.active { display:block; }
+    .section-head { margin-bottom:28px; }
+    .section-head h2 { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:600; color:var(--marrone); margin-bottom:4px; }
+    .section-head p { font-size:.85rem; color:var(--testo-soft); }
+
+    /* ── CARD GENERICA ── */
+    .card { background:var(--bianco); border:1px solid var(--ocra-light); border-radius:6px; margin-bottom:16px; overflow:hidden; }
+    .card-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 20px; background:var(--crema); border-bottom:1px solid var(--ocra-light);
+      cursor:pointer; user-select:none;
+    }
+    .card-header-left { display:flex; align-items:center; gap:10px; }
+    .card-title { font-weight:500; font-size:.95rem; color:var(--marrone); }
+    .card-toggle { font-size:.8rem; color:var(--testo-soft); transition:transform .2s; }
+    .card.open .card-toggle { transform:rotate(180deg); }
+    .card-body { padding:20px; display:none; }
+    .card.open .card-body { display:block; }
+
+    /* ── FORM CONTROLS ── */
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .form-row.full { grid-template-columns:1fr; }
+    .form-row.three { grid-template-columns:1fr 1fr 1fr; }
+    .field { display:flex; flex-direction:column; gap:5px; }
+    .field label { font-size:.72rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--testo-soft); }
+    .field input, .field textarea, .field select {
+      padding:9px 12px; border:1px solid var(--ocra-light); border-radius:3px;
+      font-family:'Jost',sans-serif; font-size:.9rem; color:var(--testo);
+      background:var(--crema); outline:none; transition:border-color .2s; resize:vertical;
+    }
+    .field input:focus, .field textarea:focus { border-color:var(--ocra); }
+    .field textarea { min-height:70px; }
+
+    /* checkbox toggle */
+    .toggle-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .toggle-row label { font-size:.85rem; color:var(--testo-soft); cursor:pointer; }
+    input[type=checkbox] { width:18px; height:18px; accent-color:var(--ocra); cursor:pointer; }
+
+    /* foto preview */
+    .foto-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+    .foto-preview {
+      width:64px; height:64px; border-radius:4px; overflow:hidden; flex-shrink:0;
+      background:var(--ocra-light); display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem; border:1px solid var(--ocra-light);
+    }
+    .foto-preview img { width:100%; height:100%; object-fit:cover; }
+    .foto-input-wrap { flex:1; }
+
+    /* ── PULSANTI ── */
+    .btn-primary {
+      background:var(--marrone); color:var(--bianco); border:none; padding:10px 20px;
+      border-radius:3px; cursor:pointer; font-family:'Jost',sans-serif; font-size:.82rem;
+      font-weight:500; letter-spacing:.08em; text-transform:uppercase; transition:background .2s;
+    }
+    .btn-primary:hover { background:var(--ocra); }
+    .btn-secondary {
+      background:transparent; color:var(--marrone); border:1px solid var(--ocra-light); padding:10px 20px;
+      border-radius:3px; cursor:pointer; font-family:'Jost',sans-serif; font-size:.82rem;
+      font-weight:500; letter-spacing:.08em; text-transform:uppercase; transition:all .2s;
+    }
+    .btn-secondary:hover { border-color:var(--ocra); }
+    .btn-danger {
+      background:transparent; color:var(--rosso); border:1px solid #e8a0a0; padding:7px 14px;
+      border-radius:3px; cursor:pointer; font-family:'Jost',sans-serif; font-size:.78rem;
+      letter-spacing:.05em; transition:all .2s;
+    }
+    .btn-danger:hover { background:#fdf0f0; }
+    .btn-add {
+      background:var(--lotus-soft); color:var(--marrone); border:1px dashed var(--lotus);
+      padding:10px 20px; border-radius:3px; cursor:pointer; font-family:'Jost',sans-serif;
+      font-size:.82rem; font-weight:500; transition:all .2s; width:100%; margin-top:10px;
+    }
+    .btn-add:hover { background:var(--lotus); }
+
+    /* ── PRODOTTO INLINE (catalogo) ── */
+    .prodotto-item {
+      border:1px solid var(--ocra-light); border-radius:4px; padding:16px;
+      margin-bottom:12px; background:var(--crema); position:relative;
+    }
+    .prodotto-item-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .prodotto-num { font-size:.75rem; font-weight:600; color:var(--ocra); letter-spacing:.1em; text-transform:uppercase; }
+
+    /* ── ORARI TABLE ── */
+    .orari-edit-table { width:100%; border-collapse:collapse; }
+    .orari-edit-table tr { border-bottom:1px solid var(--ocra-light); }
+    .orari-edit-table td { padding:10px 8px; }
+    .orari-edit-table td:first-child { width:120px; font-weight:500; color:var(--marrone); font-size:.9rem; }
+    .orari-edit-table input[type=text] { width:100%; }
+    .orari-edit-table input[type=checkbox] { width:18px; height:18px; }
+
+    /* ── SAVE BAR ── */
+    .save-bar {
+      position:fixed; bottom:0; left:var(--sidebar); right:0; z-index:80;
+      background:var(--marrone); padding:14px 32px; display:flex; align-items:center; justify-content:space-between;
+      box-shadow:0 -4px 20px rgba(30,15,5,.2);
+    }
+    .save-bar p { color:rgba(255,255,255,.7); font-size:.82rem; }
+    .btn-save {
+      background:var(--ocra); color:var(--marrone); border:none; padding:12px 28px;
+      border-radius:3px; cursor:pointer; font-family:'Jost',sans-serif; font-size:.85rem;
+      font-weight:600; letter-spacing:.08em; text-transform:uppercase; transition:all .2s;
+      display:flex; align-items:center; gap:8px;
+    }
+    .btn-save:hover { background:var(--ocra-light); }
+
+    /* ── TOAST ── */
+    .toast {
+      position:fixed; top:70px; right:24px; z-index:9999;
+      background:var(--verde); color:var(--bianco); padding:12px 20px; border-radius:4px;
+      font-size:.85rem; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,.15);
+      transform:translateX(120%); transition:transform .3s; pointer-events:none;
+    }
+    .toast.show { transform:translateX(0); }
+
+    @media(max-width:768px){
+      :root{--sidebar:0px;}
+      .admin-sidebar{display:none;}
+      .save-bar{left:0;}
+      .form-row,.form-row.three{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Seconda Pelle</div>
+    <div class="login-sub">Pannello Admin</div>
+    <input type="password" id="pwdInput" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">Accedi</button>
+    <div class="login-error" id="loginError">Password non corretta.</div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN ══════════ -->
+<div id="adminPanel">
+  <header class="admin-header">
+    <div class="admin-brand">Seconda Pelle <span>Admin</span></div>
+    <button class="btn-logout" onclick="logout()">Esci</button>
+  </header>
+
+  <aside class="admin-sidebar">
+    <nav class="sidebar-nav">
+      <div class="sidebar-item active" onclick="showTab('novita',this)"><span class="sidebar-icon">✨</span> Novità</div>
+      <div class="sidebar-item" onclick="showTab('catalogo',this)"><span class="sidebar-icon">📦</span> Catalogo</div>
+      <div class="sidebar-item" onclick="showTab('orari',this)"><span class="sidebar-icon">🕐</span> Orari</div>
+      <div class="sidebar-item" onclick="showTab('contatti',this)"><span class="sidebar-icon">📍</span> Contatti</div>
+    </nav>
+    <div class="sidebar-footer" style="font-size:.72rem;color:var(--testo-soft);line-height:1.6;">
+      Dopo aver salvato,<br>carica <strong>dati.js</strong><br>su GitHub.
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- TAB: NOVITÀ -->
+    <div class="tab-section active" id="tab-novita">
+      <div class="section-head">
+        <h2>✨ Novità</h2>
+        <p>Gestisci gli articoli in evidenza nella sezione "Le novità del momento"</p>
+      </div>
+      <div id="novitaList"></div>
+      <button class="btn-add" onclick="aggiungiNovita()">+ Aggiungi articolo</button>
+    </div>
+
+    <!-- TAB: CATALOGO -->
+    <div class="tab-section" id="tab-catalogo">
+      <div class="section-head">
+        <h2>📦 Catalogo prodotti</h2>
+        <p>Aggiungi o modifica i prodotti per ogni categoria</p>
+      </div>
+      <div id="catalogoList"></div>
+    </div>
+
+    <!-- TAB: ORARI -->
+    <div class="tab-section" id="tab-orari">
+      <div class="section-head">
+        <h2>🕐 Orari di apertura</h2>
+        <p>Modifica gli orari per ogni giorno della settimana</p>
+      </div>
+      <div class="card" style="overflow:visible;">
+        <div class="card-body" style="display:block;">
+          <table class="orari-edit-table" id="orariTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CONTATTI -->
+    <div class="tab-section" id="tab-contatti">
+      <div class="section-head">
+        <h2>📍 Contatti & Informazioni</h2>
+        <p>Indirizzo, telefono, email e social del negozio</p>
+      </div>
+      <div class="card">
+        <div class="card-body" style="display:block;">
+          <div class="form-row">
+            <div class="field"><label>Indirizzo (via e numero)</label><input type="text" id="c-indirizzo"></div>
+            <div class="field"><label>CAP e città</label><input type="text" id="c-citta"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Telefono (es. +39 333 123 4567)</label><input type="text" id="c-telefono"></div>
+            <div class="field"><label>Telefono per link (solo numeri, es. +39333123456)</label><input type="text" id="c-telefonoHref"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label>Email</label><input type="email" id="c-email"></div>
+            <div class="field"><label>Instagram (es. @secondapelle)</label><input type="text" id="c-instagram"></div>
+          </div>
+          <div class="form-row full">
+            <div class="field"><label>URL Instagram (es. https://instagram.com/secondapelle)</label><input type="url" id="c-instagramUrl"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="save-bar">
+    <p>💡 Clicca "Genera dati.js" per scaricare il file da caricare su GitHub</p>
+    <button class="btn-save" onclick="generaDati()">💾 Genera dati.js</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ File dati.js scaricato!</div>
+
+<!-- Carica i dati correnti dal sito -->
+<script src="dati.js"></script>
+<script>
+
+// ── PASSWORD ─────────────────────────────────────────────────
+// ✏️ Cambia questa password come vuoi (una sola parola, no spazi)
+const PASSWORD = "secondapelle2025";
+
+function login() {
+  if (document.getElementById('pwdInput').value === PASSWORD) {
+    sessionStorage.setItem('sp_admin','1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function logout() { sessionStorage.removeItem('sp_admin'); location.reload(); }
+if (sessionStorage.getItem('sp_admin')==='1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  window.addEventListener('DOMContentLoaded', initAdmin);
+}
+
+// ── STATO ────────────────────────────────────────────────────
+let state = {};
+
+function initAdmin() {
+  state = {
+    contatti: JSON.parse(JSON.stringify(typeof CONTATTI!=='undefined' ? CONTATTI : {})),
+    novita:   JSON.parse(JSON.stringify(typeof NOVITA!=='undefined'   ? NOVITA   : [])),
+    categorie:JSON.parse(JSON.stringify(typeof CATEGORIE!=='undefined'? CATEGORIE: [])),
+    orari:    JSON.parse(JSON.stringify(typeof ORARI!=='undefined'    ? ORARI    : []))
+  };
+  renderNovita();
+  renderCatalogo();
+  renderOrari();
+  renderContatti();
+}
+
+// ── TAB ──────────────────────────────────────────────────────
+function showTab(id, el) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── FOTO PREVIEW ─────────────────────────────────────────────
+function fotoSrc(foto) {
+  if (!foto || !foto.trim()) return '';
+  if (foto.startsWith('http://') || foto.startsWith('https://')) return foto;
+  return 'img/' + foto;
+}
+function aggiornaPreview(inputEl, previewEl, emoji) {
+  const src = fotoSrc(inputEl.value.trim());
+  if (src) {
+    previewEl.innerHTML = `<img src="${src}" onerror="this.parentElement.innerHTML='${emoji}'" alt="">`;
+  } else {
+    previewEl.innerHTML = emoji;
+  }
+}
+
+// ── NOVITÀ ───────────────────────────────────────────────────
+function renderNovita() {
+  const el = document.getElementById('novitaList');
+  el.innerHTML = '';
+  state.novita.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'card open';
+    div.innerHTML = `
+      <div class="card-header">
+        <div class="card-header-left">
+          <span>${p.emoji || '📦'}</span>
+          <span class="card-title">${p.nome || 'Nuovo articolo'}</span>
+          ${p.nuovo ? '<span style="background:var(--lotus);color:var(--marrone);font-size:.65rem;padding:2px 8px;border-radius:10px;font-weight:600;">NUOVO</span>' : ''}
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="card-toggle">▼</span>
+          <button class="btn-danger btn-del-novita">Elimina</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="foto-row">
+          <div class="foto-preview" id="nprev-${i}">${p.emoji||'📦'}</div>
+          <div class="foto-input-wrap">
+            <div class="field"><label>Foto (nome file es. "prodotto.jpg" oppure URL completo)</label>
+              <input type="text" value="${p.foto||''}" placeholder="prodotto.jpg" data-idx="${i}" class="inp-novita-foto">
+            </div>
+          </div>
+        </div>
+        <div class="form-row three">
+          <div class="field"><label>Emoji</label>
+            <input type="text" value="${p.emoji||''}" placeholder="👕" data-idx="${i}" class="inp-novita-emoji">
+          </div>
+          <div class="field"><label>Tag / Categoria</label>
+            <input type="text" value="${p.tag||''}" placeholder="Intimo" data-idx="${i}" class="inp-novita-tag">
+          </div>
+          <div class="field"><label>&nbsp;</label>
+            <div class="toggle-row" style="margin:0;padding-top:6px;">
+              <input type="checkbox" ${p.nuovo?'checked':''} data-idx="${i}" class="inp-novita-nuovo">
+              <label>Mostra badge "NUOVO"</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field"><label>Nome prodotto</label>
+            <input type="text" value="${p.nome||''}" placeholder="Nome del prodotto" data-idx="${i}" class="inp-novita-nome">
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="field"><label>Descrizione</label>
+            <textarea placeholder="Breve descrizione..." data-idx="${i}" class="inp-novita-desc">${p.desc||''}</textarea>
+          </div>
+        </div>
+      </div>`;
+    el.appendChild(div);
+
+    // ── Event listeners (evita problemi con onclick inline) ──
+    const header = div.querySelector('.card-header');
+    header.addEventListener('click', () => toggleCard(header));
+
+    const btnDel = div.querySelector('.btn-del-novita');
+    btnDel.addEventListener('click', (e) => {
+      e.stopPropagation();
+      state.novita.splice(i, 1);
+      renderNovita();
+    });
+
+    const prevEl = document.getElementById(`nprev-${i}`);
+    div.querySelector('.inp-novita-foto').addEventListener('input', function() {
+      state.novita[i].foto = this.value;
+      aggiornaPreview(this, prevEl, state.novita[i].emoji || '📦');
+    });
+    div.querySelector('.inp-novita-emoji').addEventListener('input', function() {
+      state.novita[i].emoji = this.value;
+      renderNovita();
+    });
+    div.querySelector('.inp-novita-tag').addEventListener('input', function() {
+      state.novita[i].tag = this.value;
+    });
+    div.querySelector('.inp-novita-nuovo').addEventListener('change', function() {
+      state.novita[i].nuovo = this.checked;
+      renderNovita();
+    });
+    div.querySelector('.inp-novita-nome').addEventListener('input', function() {
+      state.novita[i].nome = this.value;
+      div.querySelector('.card-title').textContent = this.value;
+    });
+    div.querySelector('.inp-novita-desc').addEventListener('input', function() {
+      state.novita[i].desc = this.value;
+    });
+
+    // Preview foto esistente
+    if (p.foto) {
+      const img = document.createElement('img');
+      img.src = fotoSrc(p.foto);
+      img.onerror = () => { prevEl.textContent = p.emoji || '📦'; };
+      prevEl.innerHTML = '';
+      prevEl.appendChild(img);
+    }
+  });
+}
+function aggiungiNovita() {
+  state.novita.push({foto:'',emoji:'📦',nuovo:true,tag:'',nome:'Nuovo articolo',desc:''});
+  renderNovita();
+  document.getElementById('novitaList').lastElementChild.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── CATALOGO ─────────────────────────────────────────────────
+function renderCatalogo() {
+  const el = document.getElementById('catalogoList');
+  el.innerHTML = '';
+  state.categorie.forEach((cat, ci) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="cat-icon-disp">${cat.icon}</span>
+          <span class="card-title">${cat.nome}</span>
+          <span class="cat-count" style="font-size:.75rem;color:var(--testo-soft);">${(cat.prodotti||[]).length} prodotti</span>
+        </div>
+        <span class="card-toggle">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="form-row three" style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--ocra-light);">
+          <div class="field"><label>Icona (emoji)</label>
+            <input type="text" value="${cat.icon||''}" class="inp-cat-icon">
+          </div>
+          <div class="field"><label>Nome categoria</label>
+            <input type="text" value="${cat.nome||''}" class="inp-cat-nome">
+          </div>
+          <div class="field"><label>Descrizione breve</label>
+            <input type="text" value="${cat.desc||''}" class="inp-cat-desc">
+          </div>
+        </div>
+        <div id="prodList-${ci}"></div>
+        <button class="btn-add btn-add-prod">+ Aggiungi prodotto</button>
+      </div>`;
+    el.appendChild(div);
+
+    // Toggle header
+    const header = div.querySelector('.card-header');
+    header.addEventListener('click', () => toggleCard(header));
+
+    // Input categorie
+    div.querySelector('.inp-cat-icon').addEventListener('input', function() {
+      state.categorie[ci].icon = this.value;
+      div.querySelector('.cat-icon-disp').textContent = this.value;
+    });
+    div.querySelector('.inp-cat-nome').addEventListener('input', function() {
+      state.categorie[ci].nome = this.value;
+      div.querySelector('.card-title').textContent = this.value;
+    });
+    div.querySelector('.inp-cat-desc').addEventListener('input', function() {
+      state.categorie[ci].desc = this.value;
+    });
+
+    // Aggiungi prodotto
+    div.querySelector('.btn-add-prod').addEventListener('click', () => {
+      if (!state.categorie[ci].prodotti) state.categorie[ci].prodotti = [];
+      state.categorie[ci].prodotti.push({foto:'',emoji:'📦',nome:'',note:'',prezzo:''});
+      renderProdotti(ci);
+      div.querySelector('.cat-count').textContent = state.categorie[ci].prodotti.length + ' prodotti';
+    });
+
+    renderProdotti(ci);
+  });
+}
+
+function renderProdotti(ci) {
+  const el = document.getElementById(`prodList-${ci}`);
+  if (!el) return;
+  el.innerHTML = '';
+  const prodotti = state.categorie[ci].prodotti || [];
+  prodotti.forEach((p, pi) => {
+    const div = document.createElement('div');
+    div.className = 'prodotto-item';
+    div.innerHTML = `
+      <div class="prodotto-item-header">
+        <span class="prodotto-num">Prodotto ${pi+1}</span>
+        <button class="btn-danger btn-del-prod">Elimina</button>
+      </div>
+      <div class="foto-row">
+        <div class="foto-preview" id="cprev-${ci}-${pi}">${p.emoji||'📦'}</div>
+        <div class="foto-input-wrap">
+          <div class="field"><label>Foto (nome file o URL)</label>
+            <input type="text" value="${p.foto||''}" placeholder="prodotto.jpg" class="inp-prod-foto">
+          </div>
+        </div>
+      </div>
+      <div class="form-row three">
+        <div class="field"><label>Emoji</label>
+          <input type="text" value="${p.emoji||''}" placeholder="👕" class="inp-prod-emoji">
+        </div>
+        <div class="field"><label>Nome</label>
+          <input type="text" value="${p.nome||''}" placeholder="Nome prodotto" class="inp-prod-nome">
+        </div>
+        <div class="field"><label>Prezzo (opzionale)</label>
+          <input type="text" value="${p.prezzo||''}" placeholder="€ 19,90" class="inp-prod-prezzo">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Note / descrizione breve</label>
+          <input type="text" value="${p.note||''}" placeholder="Cotone biologico, taglie S–XL" class="inp-prod-note">
+        </div>
+      </div>`;
+    el.appendChild(div);
+
+    // ── Event listeners ──
+    const prevEl = document.getElementById(`cprev-${ci}-${pi}`);
+
+    // Elimina prodotto
+    div.querySelector('.btn-del-prod').addEventListener('click', () => {
+      state.categorie[ci].prodotti.splice(pi, 1);
+      renderProdotti(ci);
+      // aggiorna contatore nella card categoria
+      const catCard = document.getElementById(`prodList-${ci}`).closest('.card');
+      if (catCard) catCard.querySelector('.cat-count').textContent = state.categorie[ci].prodotti.length + ' prodotti';
+    });
+
+    div.querySelector('.inp-prod-foto').addEventListener('input', function() {
+      state.categorie[ci].prodotti[pi].foto = this.value;
+      aggiornaPreview(this, prevEl, state.categorie[ci].prodotti[pi].emoji || '📦');
+    });
+    div.querySelector('.inp-prod-emoji').addEventListener('input', function() {
+      state.categorie[ci].prodotti[pi].emoji = this.value;
+    });
+    div.querySelector('.inp-prod-nome').addEventListener('input', function() {
+      state.categorie[ci].prodotti[pi].nome = this.value;
+    });
+    div.querySelector('.inp-prod-prezzo').addEventListener('input', function() {
+      state.categorie[ci].prodotti[pi].prezzo = this.value;
+    });
+    div.querySelector('.inp-prod-note').addEventListener('input', function() {
+      state.categorie[ci].prodotti[pi].note = this.value;
+    });
+
+    // Preview foto esistente
+    if (p.foto) {
+      const img = document.createElement('img');
+      img.src = fotoSrc(p.foto);
+      img.onerror = () => { prevEl.textContent = p.emoji || '📦'; };
+      prevEl.innerHTML = '';
+      prevEl.appendChild(img);
+    }
+  });
+}
+function aggiungiProdotto(ci) {
+  if (!state.categorie[ci].prodotti) state.categorie[ci].prodotti = [];
+  state.categorie[ci].prodotti.push({foto:'',emoji:'📦',nome:'',note:'',prezzo:''});
+  renderProdotti(ci);
+}
+
+// ── ORARI ────────────────────────────────────────────────────
+function renderOrari() {
+  const el = document.getElementById('orariTable');
+  el.innerHTML = '<tr style="border-bottom:2px solid var(--ocra-light);"><th style="text-align:left;padding:8px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--testo-soft);">Giorno</th><th style="text-align:left;padding:8px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--testo-soft);">Orario</th><th style="padding:8px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--testo-soft);">Chiuso</th></tr>';
+  state.orari.forEach((o, i) => {
+    el.innerHTML += `<tr>
+      <td><strong>${o.giorno}</strong></td>
+      <td><input type="text" value="${o.orario||''}" style="width:100%"
+        oninput="state.orari[${i}].orario=this.value"></td>
+      <td style="text-align:center;"><input type="checkbox" ${o.chiuso?'checked':''}
+        onchange="state.orari[${i}].chiuso=this.checked"></td>
+    </tr>`;
+  });
+}
+
+// ── CONTATTI ─────────────────────────────────────────────────
+function renderContatti() {
+  const c = state.contatti;
+  document.getElementById('c-indirizzo').value    = c.indirizzo    || '';
+  document.getElementById('c-citta').value        = c.citta        || '';
+  document.getElementById('c-telefono').value     = c.telefono     || '';
+  document.getElementById('c-telefonoHref').value = c.telefonoHref || '';
+  document.getElementById('c-email').value        = c.email        || '';
+  document.getElementById('c-instagram').value    = c.instagram    || '';
+  document.getElementById('c-instagramUrl').value = c.instagramUrl || '';
+
+  ['indirizzo','citta','telefono','telefonoHref','email','instagram','instagramUrl'].forEach(k => {
+    document.getElementById('c-'+k).oninput = function(){ state.contatti[k] = this.value; };
+  });
+}
+
+// ── TOGGLE CARD ──────────────────────────────────────────────
+function toggleCard(header) {
+  header.parentElement.classList.toggle('open');
+}
+
+// ── GENERA dati.js ───────────────────────────────────────────
+function generaDati() {
+  const today = new Date().toISOString().slice(0,10);
+
+  function esc(s) { return (s||'').replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\${/g,'\\${'); }
+  function js(val) { return JSON.stringify(val, null, 2); }
+
+  const content =
+`// ═══════════════════════════════════════════════════
+//  dati.js — Seconda Pelle · Santerno Relax Store
+//  Generato il: ${today}
+//
+//  Questo file viene aggiornato dal pannello admin.
+//  NON modificare manualmente — usa admin.html
+// ═══════════════════════════════════════════════════
+
+const CARTELLA_FOTO = "img/";
+
+// ── CONTATTI ──────────────────────────────────────
+const CONTATTI = ${js(state.contatti)};
+
+// ── ORARI ─────────────────────────────────────────
+const ORARI = ${js(state.orari)};
+
+// ── NOVITÀ ────────────────────────────────────────
+const NOVITA = ${js(state.novita)};
+
+// ── CATEGORIE + CATALOGO ──────────────────────────
+const CATEGORIE = ${js(state.categorie)};
+`;
+
+  // Download
+  const blob = new Blob([content], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dati.js';
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  // Toast
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+</script>
+</body>
+</html>
