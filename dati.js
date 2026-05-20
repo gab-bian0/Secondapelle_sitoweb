@@ -23,32 +23,32 @@ const CONTATTI = {
 const ORARI = [
   {
     "giorno": "Lunedì",
-    "orario": "9:00 – 12:30  /  15:30 – 19:00",
+    "orario": "8:30 – 12:30 / 15:00 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Martedì",
-    "orario": "9:00 – 12:30  /  15:30 – 19:00",
+    "orario": "15:00 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Mercoledì",
-    "orario": "9:00 – 12:30",
+    "orario": "8:30 – 12:30 / 15:00 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Giovedì",
-    "orario": "9:00 – 12:30  /  15:30 – 19:00",
+    "orario": "8:30 – 12:30 / 15:00 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Venerdì",
-    "orario": "9:00 – 12:30  /  15:30 – 19:00",
+    "orario": "8:30 – 12:30 / 15:00 – 19:00",
     "chiuso": false
   },
   {
     "giorno": "Sabato",
-    "orario": "9:00 – 12:30  /  15:30 – 19:00",
+    "orario": "8:30 – 12:30 / 15:00 – 19:00",
     "chiuso": false
   },
   {
