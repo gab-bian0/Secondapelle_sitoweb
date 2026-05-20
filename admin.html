@@ -218,9 +218,10 @@
       <div class="sidebar-item active" onclick="showTab('catalogo',this)"><span class="sidebar-icon">📦</span> Catalogo</div>
       <div class="sidebar-item" onclick="showTab('orari',this)"><span class="sidebar-icon">🕐</span> Orari</div>
       <div class="sidebar-item" onclick="showTab('contatti',this)"><span class="sidebar-icon">📍</span> Contatti</div>
+      <div class="sidebar-item" onclick="showTab('impostazioni',this)"><span class="sidebar-icon">⚙️</span> Impostazioni</div>
     </nav>
-    <div class="sidebar-footer" style="font-size:.72rem;color:var(--testo-soft);line-height:1.6;">
-      Dopo aver salvato,<br>carica <strong>dati.js</strong><br>su GitHub.
+    <div class="sidebar-footer" id="ghStatus" style="font-size:.72rem;color:var(--testo-soft);line-height:1.6;">
+      GitHub non configurato.<br>Vai in <strong>Impostazioni</strong>.
     </div>
   </aside>
 
@@ -275,22 +276,71 @@
       </div>
     </div>
 
+    <!-- TAB: IMPOSTAZIONI -->
+    <div class="tab-section" id="tab-impostazioni">
+      <div class="section-head">
+        <h2>⚙️ Impostazioni GitHub</h2>
+        <p>Configura il collegamento a GitHub per salvare i dati direttamente senza scaricare file.<br>
+        Queste informazioni vengono salvate <strong>solo su questo browser</strong> e non vengono mai caricate online.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-body" style="display:block;">
+
+          <div style="background:var(--lotus-soft);border:1px solid var(--ocra-light);border-radius:4px;padding:20px;margin-bottom:24px;font-size:.85rem;line-height:1.8;color:var(--testo-soft);">
+            <strong style="color:var(--marrone);">📋 Come ottenere il token GitHub</strong><br>
+            1. Vai su <strong>github.com</strong> → clicca sulla tua foto in alto a destra → <strong>Settings</strong><br>
+            2. Scorri fino in fondo → <strong>Developer settings</strong><br>
+            3. <strong>Personal access tokens → Tokens (classic)</strong><br>
+            4. Clicca <strong>Generate new token (classic)</strong><br>
+            5. Dai un nome (es. "Seconda Pelle"), metti la spunta su <strong>repo</strong>, clicca <strong>Generate token</strong><br>
+            6. Copia il token e incollalo qui sotto — <em>non lo rivedrai più!</em>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>Username GitHub</label>
+              <input type="text" id="gh-user" placeholder="es. secondapelle-negozio">
+            </div>
+            <div class="field">
+              <label>Nome repository</label>
+              <input type="text" id="gh-repo" placeholder="es. secondapelle-sito">
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="field">
+              <label>Token di accesso (Personal Access Token)</label>
+              <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:4px;">
+            <button class="btn-primary" onclick="salvaImpostazioni()">Salva impostazioni</button>
+            <button class="btn-secondary" onclick="testGitHub()">Testa collegamento</button>
+            <button class="btn-danger" onclick="cancellaImpostazioni()">Dimentica token</button>
+          </div>
+          <div id="ghTestResult" style="margin-top:14px;font-size:.85rem;display:none;padding:10px 14px;border-radius:3px;"></div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <div class="save-bar">
-    <p>💡 Clicca "Genera dati.js" per scaricare il file da caricare su GitHub</p>
-    <button class="btn-save" onclick="generaDati()">💾 Genera dati.js</button>
+    <p id="saveBarMsg">💡 Salva su GitHub o scarica il file manualmente</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-save" style="background:rgba(255,255,255,.15);color:var(--bianco);font-weight:400;" onclick="generaDati()">💾 Scarica dati.js</button>
+      <button class="btn-save" id="btnGitHub" onclick="salvaSuGitHub()">🚀 Salva su GitHub</button>
+    </div>
   </div>
 </div>
 
-<div class="toast" id="toast">✅ File dati.js scaricato!</div>
+<div class="toast" id="toast"></div>
 
 <!-- Carica i dati correnti dal sito -->
 <script src="dati.js"></script>
 <script>
 
 // ── PASSWORD ─────────────────────────────────────────────────
-// ✏️ Cambia questa password come vuoi (una sola parola, no spazi)
 const PASSWORD = "secondapelle2025";
 
 function login() {
@@ -322,6 +372,15 @@ function initAdmin() {
   renderCatalogo();
   renderOrari();
   renderContatti();
+
+  // Carica impostazioni GitHub salvate
+  const ghUser  = localStorage.getItem('sp_gh_user');
+  const ghRepo  = localStorage.getItem('sp_gh_repo');
+  const ghToken = localStorage.getItem('sp_gh_token');
+  if (ghUser)  document.getElementById('gh-user').value  = ghUser;
+  if (ghRepo)  document.getElementById('gh-repo').value  = ghRepo;
+  if (ghToken) document.getElementById('gh-token').value = ghToken;
+  aggiornaStatoGitHub();
 }
 
 // ── TAB ──────────────────────────────────────────────────────
@@ -645,15 +704,11 @@ function toggleCard(header) {
   header.parentElement.classList.toggle('open');
 }
 
-// ── GENERA dati.js ───────────────────────────────────────────
-function generaDati() {
+// ── GENERA dati.js (contenuto) ────────────────────────────────
+function buildDatiContent() {
   const today = new Date().toISOString().slice(0,10);
-
-  function esc(s) { return (s||'').replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\${/g,'\\${'); }
   function js(val) { return JSON.stringify(val, null, 2); }
-
-  const content =
-`// ═══════════════════════════════════════════════════
+  return `// ═══════════════════════════════════════════════════
 //  dati.js — Seconda Pelle · Santerno Relax Store
 //  Generato il: ${today}
 //
@@ -674,19 +729,167 @@ const ORARI = ${js(state.orari)};
 // anche nella sezione "Le novità del momento"
 const CATEGORIE = ${js(state.categorie)};
 `;
+}
 
-  // Download
+// ── SCARICA dati.js ───────────────────────────────────────────
+function generaDati() {
+  const content = buildDatiContent();
   const blob = new Blob([content], {type:'text/javascript'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'dati.js';
   a.click();
   URL.revokeObjectURL(a.href);
+  showToast('✅ File dati.js scaricato!', 'verde');
+}
 
-  // Toast
+// ── IMPOSTAZIONI GITHUB ───────────────────────────────────────
+function salvaImpostazioni() {
+  const user  = document.getElementById('gh-user').value.trim();
+  const repo  = document.getElementById('gh-repo').value.trim();
+  const token = document.getElementById('gh-token').value.trim();
+  if (!user || !repo || !token) { alert('Compila tutti i campi.'); return; }
+  localStorage.setItem('sp_gh_user',  user);
+  localStorage.setItem('sp_gh_repo',  repo);
+  localStorage.setItem('sp_gh_token', token);
+  aggiornaStatoGitHub();
+  showToast('✅ Impostazioni salvate!', 'verde');
+}
+function cancellaImpostazioni() {
+  if (!confirm('Eliminare il token salvato?')) return;
+  localStorage.removeItem('sp_gh_user');
+  localStorage.removeItem('sp_gh_repo');
+  localStorage.removeItem('sp_gh_token');
+  document.getElementById('gh-user').value  = '';
+  document.getElementById('gh-repo').value  = '';
+  document.getElementById('gh-token').value = '';
+  aggiornaStatoGitHub();
+  showToast('🗑️ Token eliminato.', 'neutro');
+}
+function aggiornaStatoGitHub() {
+  const user  = localStorage.getItem('sp_gh_user');
+  const repo  = localStorage.getItem('sp_gh_repo');
+  const token = localStorage.getItem('sp_gh_token');
+  const status = document.getElementById('ghStatus');
+  const btn    = document.getElementById('btnGitHub');
+  if (user && repo && token) {
+    status.innerHTML = `✅ GitHub collegato<br><strong>${user}/${repo}</strong>`;
+    status.style.color = 'var(--verde)';
+    btn.style.background = 'var(--ocra)';
+    btn.style.opacity = '1';
+    btn.style.cursor  = 'pointer';
+  } else {
+    status.innerHTML = 'GitHub non configurato.<br>Vai in <strong>Impostazioni</strong>.';
+    status.style.color = 'var(--testo-soft)';
+    btn.style.background = 'rgba(255,255,255,.1)';
+    btn.style.opacity = '.5';
+    btn.style.cursor  = 'not-allowed';
+  }
+}
+
+async function testGitHub() {
+  const user  = document.getElementById('gh-user').value.trim()  || localStorage.getItem('sp_gh_user');
+  const repo  = document.getElementById('gh-repo').value.trim()  || localStorage.getItem('sp_gh_repo');
+  const token = document.getElementById('gh-token').value.trim() || localStorage.getItem('sp_gh_token');
+  const res   = document.getElementById('ghTestResult');
+  if (!user || !repo || !token) {
+    mostraRisultatoTest(false, 'Compila prima tutti i campi.'); return;
+  }
+  res.style.display = 'block';
+  res.style.background = 'var(--ocra-light)';
+  res.style.color = 'var(--marrone)';
+  res.textContent = '⏳ Connessione in corso...';
+  try {
+    const r = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.ok) {
+      mostraRisultatoTest(true, `✅ Collegamento riuscito! Repository "${repo}" trovato.`);
+    } else if (r.status === 401) {
+      mostraRisultatoTest(false, '❌ Token non valido o scaduto. Generane uno nuovo da GitHub.');
+    } else if (r.status === 404) {
+      mostraRisultatoTest(false, `❌ Repository "${user}/${repo}" non trovato. Controlla username e nome repo.`);
+    } else {
+      mostraRisultatoTest(false, `❌ Errore ${r.status}. Riprova.`);
+    }
+  } catch(e) {
+    mostraRisultatoTest(false, '❌ Impossibile raggiungere GitHub. Controlla la connessione internet.');
+  }
+}
+function mostraRisultatoTest(ok, msg) {
+  const res = document.getElementById('ghTestResult');
+  res.style.display  = 'block';
+  res.style.background = ok ? '#e8f5ee' : '#fdf0f0';
+  res.style.color      = ok ? '#2d7a52' : 'var(--rosso)';
+  res.textContent = msg;
+}
+
+// ── SALVA SU GITHUB ───────────────────────────────────────────
+async function salvaSuGitHub() {
+  const user  = localStorage.getItem('sp_gh_user');
+  const repo  = localStorage.getItem('sp_gh_repo');
+  const token = localStorage.getItem('sp_gh_token');
+  if (!user || !repo || !token) {
+    alert('Configura prima il collegamento GitHub nella sezione Impostazioni.'); return;
+  }
+
+  const btn = document.getElementById('btnGitHub');
+  btn.textContent = '⏳ Salvataggio...';
+  btn.style.opacity = '.7';
+  btn.style.cursor = 'not-allowed';
+
+  try {
+    const content = buildDatiContent();
+    const base64  = btoa(unescape(encodeURIComponent(content)));
+    const apiUrl  = `https://api.github.com/repos/${user}/${repo}/contents/dati.js`;
+    const headers = {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    };
+
+    // Prima recupera il SHA attuale del file (serve per aggiornarlo)
+    let sha = null;
+    const getRes = await fetch(apiUrl, { headers });
+    if (getRes.ok) {
+      const data = await getRes.json();
+      sha = data.sha;
+    } else if (getRes.status !== 404) {
+      throw new Error(`Errore nel recupero del file: ${getRes.status}`);
+    }
+
+    // Aggiorna (o crea) il file
+    const body = {
+      message: `Aggiornamento dati.js — ${new Date().toLocaleString('it-IT')}`,
+      content: base64,
+      ...(sha ? { sha } : {})
+    };
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT', headers, body: JSON.stringify(body)
+    });
+
+    if (putRes.ok) {
+      showToast('🚀 Salvato su GitHub! Il sito si aggiorna in 1–2 minuti.', 'verde');
+    } else {
+      const err = await putRes.json();
+      throw new Error(err.message || putRes.status);
+    }
+  } catch(e) {
+    showToast(`❌ Errore: ${e.message}`, 'rosso');
+  } finally {
+    btn.textContent = '🚀 Salva su GitHub';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg, tipo) {
   const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = tipo === 'rosso' ? 'var(--rosso)' : tipo === 'neutro' ? 'var(--testo-soft)' : 'var(--verde)';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 4000);
 }
 
 </script>
