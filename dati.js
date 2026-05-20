@@ -10,9 +10,9 @@ const CARTELLA_FOTO = "img/";
 
 // ── CONTATTI ──────────────────────────────────────
 const CONTATTI = {
-  "indirizzo": "Via [Nome Via], [Numero]",
+  "indirizzo": "Via S. Vitale, 8",
   "citta": "48020 Sant'Agata sul Santerno (RA)",
-  "telefono": "+39 XXX XXX XXXX",
+  "telefono": "0545916362",
   "telefonoHref": "+39XXXXXXXXXX",
   "email": "info@secondapelle.it",
   "instagram": "@secondapelle",
