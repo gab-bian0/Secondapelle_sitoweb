@@ -14,9 +14,9 @@ const CONTATTI = {
   "citta": "48020 Sant'Agata sul Santerno (RA)",
   "telefono": "0545916362",
   "telefonoHref": "+39XXXXXXXXXX",
-  "email": "info@secondapelle.it",
-  "instagram": "@secondapelle",
-  "instagramUrl": "https://instagram.com/secondapelle"
+  "email": "-",
+  "instagram": "@secondapelle_fashion_intimo",
+  "instagramUrl": "https://www.instagram.com/secondapelle_fashion_intimo?igsh=MWl5ZnlnN3NhNHRuNA=="
 };
 
 // ── ORARI ─────────────────────────────────────────
