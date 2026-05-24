@@ -31,6 +31,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -305,7 +306,7 @@
 
 <div id="mappa">
   <div class="mappa-wrapper">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5697.76340246813!2d11.8756036!3d44.435588800000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477e1cf2c21df223%3A0xa225c3d945ca8b66!2sSanterno%20calze%20e%20intimo%20SECONDAPELLE!5e0!3m2!1sit!2sit!4v1779290661170!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mappa" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5697.76340246813!2d11.8756036!3d44.435588800000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477e1cf2c21df223%3A0xa225c3d945ca8b66!2sSanterno%20calze%20e%20intimo%20SECONDAPELLE!5e0!3m2!1sit!2sit!4v1779290661170!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mappa"></iframe>
     <div class="mappa-overlay">
       <div class="mappa-nome">Seconda Pelle</div>
       <div class="mappa-addr" id="mappa-addr"></div>
@@ -363,12 +364,11 @@ document.getElementById('mappa-addr').innerHTML   = `Santerno Relax Store<br>${C
 // Novità — filtrate automaticamente dai prodotti con nuovo: true
 const ng = document.getElementById('novitaGrid');
 const novitaSection = document.getElementById('novita');
-let novitaCount = 0;
+const novitaHtml = [];
 CATEGORIE.forEach(cat => {
   (cat.prodotti || []).forEach(p => {
     if (!p.nuovo) return;
-    novitaCount++;
-    ng.innerHTML += `
+    novitaHtml.push(`
       <div class="novita-card reveal">
         <div class="novita-img">${mediaEl(p.foto, p.emoji)}</div>
         <div class="novita-body">
@@ -377,11 +377,11 @@ CATEGORIE.forEach(cat => {
           <div class="novita-name">${p.nome}</div>
           <div class="novita-desc">${p.note || ''}</div>
         </div>
-      </div>`;
+      </div>`);
   });
 });
-// Nasconde la sezione se non ci sono novità
-if (novitaCount === 0) novitaSection.style.display = 'none';
+if (novitaHtml.length === 0) novitaSection.style.display = 'none';
+ng.innerHTML = novitaHtml.join('');
 
 // Categorie
 const cg = document.getElementById('categorieGrid');
@@ -398,9 +398,7 @@ CATEGORIE.forEach((c,i) => {
 
 // Orari
 const ot = document.getElementById('orariTabella');
-ORARI.forEach(o => {
-  ot.innerHTML += `<tr><td>${o.giorno}</td><td class="${o.chiuso?'chiuso':''}">${o.orario}</td></tr>`;
-});
+ot.innerHTML = ORARI.map(o => `<tr><td>${o.giorno}</td><td class="${o.chiuso?'chiuso':''}">${o.orario}</td></tr>`).join('');
 
 document.getElementById('anno').textContent = new Date().getFullYear();
 function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
