@@ -58,7 +58,7 @@
     }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; letter-spacing:.15em; color:var(--marrone); text-decoration:none; }
     .nav-links { display:flex; gap:32px; list-style:none; }
-    .nav-links a { font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--testo-soft); text-decoration:none; transition:color .3s; }
+    .nav-links a { font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--testo-soft); text-decoration:none; transition:color .3s; position:relative; }
     .nav-links a:hover { color:var(--ocra); }
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
     .hamburger span { display:block; width:24px; height:2px; background:var(--marrone); }
@@ -82,9 +82,9 @@
     .hero-cta { margin-top:44px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 1s .35s ease both; }
     .btn { display:inline-block; padding:14px 34px; font-size:.8rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:all .3s; cursor:pointer; border:none; font-family:'Jost',sans-serif; }
     .btn-light { background:var(--bianco); color:var(--marrone); }
-    .btn-light:hover { background:var(--ocra-light); transform:translateY(-2px); }
+    .btn-light:hover { background:var(--ocra-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(92,61,46,.15); }
     .btn-outline { border:1px solid rgba(255,255,255,.5); color:var(--bianco); background:transparent; }
-    .btn-outline:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); }
+    .btn-outline:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.18); }
 
     section { padding:80px 40px; }
     .section-label { font-size:.7rem; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra); margin-bottom:10px; }
@@ -189,6 +189,17 @@
     footer { background:var(--testo); color:rgba(255,255,255,.5); text-align:center; padding:32px 40px; font-size:.78rem; letter-spacing:.08em; }
     footer strong { color:var(--ocra-light); }
 
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:var(--ocra); transition:width .3s; }
+    .nav-links a:hover::after { width:100%; }
+
+    .hero-scroll { position:absolute; bottom:96px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; animation:fadeUp 1s .5s ease both; }
+    .hero-scroll-text { font-size:.63rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.45); }
+    .hero-scroll-icon { width:22px; animation:scrollBounce 1.8s ease infinite; }
+    @keyframes scrollBounce { 0%,100%{transform:translateY(0);opacity:.45} 50%{transform:translateY(7px);opacity:1} }
+
+    .wave-sep { display:block; line-height:0; margin-top:-1px; }
+    .wave-sep svg { display:block; width:100%; height:60px; }
+
     @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
     .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
@@ -204,6 +215,8 @@
       .mappa-overlay{display:none;}
       .modal-header{padding:16px 20px;}
       .modal-body{padding:20px;}
+      .nav-links a::after{display:none;}
+      .hero-scroll{display:none;}
     }
   </style>
 </head>
@@ -230,6 +243,13 @@
       <a href="#orari" class="btn btn-outline">Vieni a trovarci</a>
     </div>
   </div>
+  <div class="hero-scroll" onclick="document.getElementById('novita').scrollIntoView({behavior:'smooth'})">
+    <span class="hero-scroll-text">Scopri</span>
+    <svg class="hero-scroll-icon" viewBox="0 0 24 26" fill="none">
+      <polyline points="4,4 12,13 20,4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="4,13 12,22 20,13" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
   <div class="hero-wave">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#faf6f0"/></svg>
   </div>
@@ -253,6 +273,10 @@
   <div class="categorie-grid" id="categorieGrid"></div>
 </section>
 
+<div class="wave-sep" style="background:var(--lotus-soft)">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,55 1080,5 1440,30 L1440,60 L0,60 Z" fill="#5c3d2e"/></svg>
+</div>
+
 <section id="chisiamo">
   <div class="chisiamo-grid">
     <div class="chisiamo-testo reveal">
@@ -269,6 +293,10 @@
     </div>
   </div>
 </section>
+
+<div class="wave-sep" style="background:var(--marrone)">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,5 1080,55 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/></svg>
+</div>
 
 <section id="orari">
   <div class="orari-grid">
