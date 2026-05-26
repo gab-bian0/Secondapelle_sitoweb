@@ -31,7 +31,6 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -45,184 +44,462 @@
       --testo:      #3a2a1e;
       --testo-soft: #7a6555;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--testo); overflow-x:hidden; }
 
+    /* ── CURSORE PERSONALIZZATO ── */
+    body { cursor: none; }
+    .cursor {
+      width:10px; height:10px; border-radius:50%; background:var(--ocra);
+      position:fixed; pointer-events:none; z-index:9999;
+      transform:translate(-50%,-50%);
+      transition:width .25s ease, height .25s ease, opacity .3s;
+      opacity:0;
+    }
+    .cursor-ring {
+      width:36px; height:36px; border-radius:50%; border:1.5px solid var(--ocra);
+      position:fixed; pointer-events:none; z-index:9998;
+      transform:translate(-50%,-50%);
+      transition:left .12s ease, top .12s ease, width .3s ease, height .3s ease, opacity .3s;
+      opacity:0;
+    }
+    a:hover ~ .cursor, button:hover ~ .cursor { width:18px; height:18px; }
+
+    /* ── NAVBAR ── */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:200;
-      background:rgba(250,246,240,0.93); backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--ocra-light);
+      background:rgba(250,246,240,0.92); backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(200,168,75,.2);
       display:flex; align-items:center; justify-content:space-between;
-      padding:0 40px; height:64px;
+      padding:0 48px; height:68px;
+      transition: box-shadow .4s;
     }
-    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; letter-spacing:.15em; color:var(--marrone); text-decoration:none; }
-    .nav-links { display:flex; gap:32px; list-style:none; }
-    .nav-links a { font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--testo-soft); text-decoration:none; transition:color .3s; position:relative; }
-    .nav-links a:hover { color:var(--ocra); }
-    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
-    .hamburger span { display:block; width:24px; height:2px; background:var(--marrone); }
+    nav.scrolled { box-shadow: 0 4px 32px rgba(92,61,46,.08); }
+    .nav-logo {
+      font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600;
+      letter-spacing:.18em; color:var(--marrone); text-decoration:none;
+      position:relative;
+    }
+    .nav-logo::after {
+      content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px;
+      background:var(--ocra); transition:width .4s ease;
+    }
+    .nav-logo:hover::after { width:100%; }
+    .nav-links { display:flex; gap:36px; list-style:none; }
+    .nav-links a {
+      font-size:.75rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--testo-soft); text-decoration:none; position:relative; padding-bottom:2px;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:0; left:0; width:0; height:1px;
+      background:var(--ocra); transition:width .35s ease;
+    }
+    .nav-links a:hover { color:var(--marrone); }
+    .nav-links a:hover::after { width:100%; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:none; }
+    .hamburger span { display:block; width:24px; height:1.5px; background:var(--marrone); transition:.3s; }
 
+    /* ── HERO ── */
     #hero {
-      min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      text-align:center; position:relative; overflow:hidden; padding:80px 24px 60px;
-      background:linear-gradient(160deg, var(--marrone) 0%, #8b5e3c 45%, var(--ocra) 100%);
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      text-align:center; position:relative; overflow:hidden; padding:80px 24px 100px;
+      background:linear-gradient(155deg, var(--marrone) 0%, #7a4f32 40%, #a07040 70%, var(--ocra) 100%);
     }
+    /* Pattern texture */
     #hero::before {
-      content:''; position:absolute; inset:0;
-      background:radial-gradient(ellipse at 70% 30%,rgba(200,168,75,.25) 0%,transparent 60%),
-                 radial-gradient(ellipse at 20% 80%,rgba(212,165,165,.2) 0%,transparent 50%);
+      content:''; position:absolute; inset:0; z-index:0;
+      background-image:
+        radial-gradient(ellipse at 75% 25%, rgba(200,168,75,.3) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 75%, rgba(212,165,165,.25) 0%, transparent 50%),
+        repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);
     }
-    .hero-wave { position:absolute; bottom:-2px; left:0; right:0; height:80px; overflow:hidden; }
+    /* Cerchi decorativi animati */
+    #hero::after {
+      content:''; position:absolute; width:600px; height:600px; border-radius:50%;
+      border:1px solid rgba(200,168,75,.15); top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      animation: pulseRing 6s ease-in-out infinite;
+    }
+    .hero-ring {
+      position:absolute; width:900px; height:900px; border-radius:50%;
+      border:1px solid rgba(200,168,75,.08); top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      animation: pulseRing 6s ease-in-out infinite 1s;
+    }
+    @keyframes pulseRing {
+      0%,100% { transform:translate(-50%,-50%) scale(1); opacity:1; }
+      50%      { transform:translate(-50%,-50%) scale(1.06); opacity:.4; }
+    }
+
+    .hero-wave { position:absolute; bottom:-2px; left:0; right:0; height:100px; overflow:hidden; z-index:2; }
     .hero-wave svg { width:100%; height:100%; }
-    .hero-content { position:relative; z-index:2; }
-    .hero-badge { display:inline-block; font-size:.72rem; letter-spacing:.25em; text-transform:uppercase; color:var(--ocra-light); border:1px solid rgba(200,168,75,.5); padding:6px 18px; border-radius:20px; margin-bottom:28px; animation:fadeUp .8s ease both; }
-    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.5rem,10vw,7rem); font-weight:300; letter-spacing:.08em; line-height:1; color:var(--bianco); animation:fadeUp .9s .1s ease both; }
-    .hero-subtitle { font-size:.9rem; font-weight:300; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra-light); margin-top:14px; animation:fadeUp 1s .2s ease both; }
-    .hero-cta { margin-top:44px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap; animation:fadeUp 1s .35s ease both; }
-    .btn { display:inline-block; padding:14px 34px; font-size:.8rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:all .3s; cursor:pointer; border:none; font-family:'Jost',sans-serif; }
-    .btn-light { background:var(--bianco); color:var(--marrone); }
-    .btn-light:hover { background:var(--ocra-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(92,61,46,.15); }
-    .btn-outline { border:1px solid rgba(255,255,255,.5); color:var(--bianco); background:transparent; }
-    .btn-outline:hover { background:rgba(255,255,255,.1); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.18); }
+    .hero-content { position:relative; z-index:3; }
 
-    section { padding:80px 40px; }
-    .section-label { font-size:.7rem; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--ocra); margin-bottom:10px; }
-    .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300; color:var(--marrone); line-height:1.2; }
-    .section-divider { width:48px; height:2px; background:var(--ocra); margin:20px 0 40px; }
+    .hero-badge {
+      display:inline-block; font-size:.7rem; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--ocra-light); border:1px solid rgba(200,168,75,.4);
+      padding:7px 22px; border-radius:40px; margin-bottom:32px;
+      background:rgba(255,255,255,.05); backdrop-filter:blur(8px);
+      animation: fadeUp .8s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(4rem,11vw,8rem); font-weight:300;
+      letter-spacing:.06em; line-height:.95; color:var(--bianco);
+      animation: fadeUp .9s .12s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-title em { font-style:italic; color:var(--ocra-light); }
+    .hero-subtitle {
+      font-size:.85rem; font-weight:300; letter-spacing:.35em; text-transform:uppercase;
+      color:rgba(255,255,255,.55); margin-top:18px;
+      animation: fadeUp 1s .22s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-divider {
+      width:1px; height:48px; background:linear-gradient(to bottom, transparent, rgba(200,168,75,.6), transparent);
+      margin:28px auto;
+      animation: fadeUp 1s .3s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-cta {
+      display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+      animation: fadeUp 1s .4s cubic-bezier(.22,1,.36,1) both;
+    }
+    .btn {
+      display:inline-block; padding:15px 36px; font-size:.78rem; font-weight:500;
+      letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
+      border-radius:2px; transition:all .4s cubic-bezier(.22,1,.36,1);
+      cursor:none; border:none; font-family:'Jost',sans-serif; position:relative; overflow:hidden;
+    }
+    .btn::before {
+      content:''; position:absolute; inset:0; background:rgba(255,255,255,.08);
+      transform:translateX(-110%) skewX(-15deg); transition:transform .5s cubic-bezier(.22,1,.36,1);
+    }
+    .btn:hover::before { transform:translateX(110%) skewX(-15deg); }
+    .btn-light { background:var(--bianco); color:var(--marrone); box-shadow:0 4px 20px rgba(0,0,0,.15); }
+    .btn-light:hover { background:var(--ocra-light); transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,.2); }
+    .btn-outline { border:1px solid rgba(255,255,255,.4); color:var(--bianco); background:rgba(255,255,255,.05); }
+    .btn-outline:hover { background:rgba(255,255,255,.12); transform:translateY(-3px); border-color:rgba(255,255,255,.7); }
+
+    /* ── SEZIONI COMUNI ── */
+    section { padding:100px 48px; }
+    .section-label {
+      font-size:.68rem; font-weight:500; letter-spacing:.35em; text-transform:uppercase;
+      color:var(--ocra); margin-bottom:10px; display:flex; align-items:center; gap:12px;
+    }
+    .section-label::before {
+      content:''; display:block; width:24px; height:1px; background:var(--ocra);
+    }
+    .section-center .section-label { justify-content:center; }
+    .section-center .section-label::before { display:none; }
+    .section-title {
+      font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,4vw,3.4rem);
+      font-weight:300; color:var(--marrone); line-height:1.15; letter-spacing:.01em;
+    }
+    .section-divider { width:40px; height:1px; background:var(--ocra); margin:22px 0 44px; }
     .section-center { text-align:center; }
-    .section-center .section-divider { margin:20px auto 40px; }
+    .section-center .section-divider { margin:22px auto 44px; }
 
+    /* ── NOVITÀ ── */
     #novita { background:var(--bianco); }
-    .novita-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:28px; }
-    .novita-card { background:var(--crema); border:1px solid var(--ocra-light); border-radius:4px; overflow:hidden; transition:transform .3s,box-shadow .3s; }
-    .novita-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(92,61,46,.12); }
-    .novita-img { width:100%; aspect-ratio:4/3; overflow:hidden; background:var(--ocra-light); display:flex; align-items:center; justify-content:center; }
-    .novita-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
-    .novita-card:hover .novita-img img { transform:scale(1.05); }
-    .novita-img .ef { font-size:3.5rem; }
-    .novita-body { padding:20px; }
-    .novita-tag { font-size:.65rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--ocra); margin-bottom:6px; }
-    .novita-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--marrone); margin-bottom:6px; }
-    .novita-desc { font-size:.82rem; color:var(--testo-soft); line-height:1.6; }
-    .badge-nuovo { display:inline-block; background:var(--lotus); color:var(--marrone); font-size:.6rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; padding:3px 10px; border-radius:2px; margin-bottom:8px; }
+    .novita-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px;
+      margin-top:0;
+    }
+    .novita-card {
+      background:var(--crema); overflow:hidden; position:relative; border-radius:2px;
+      border:1px solid var(--ocra-light);
+      transition:all .5s cubic-bezier(.22,1,.36,1);
+    }
+    .novita-card::after {
+      content:''; position:absolute; inset:0; border:1px solid transparent;
+      transition:border-color .4s; pointer-events:none;
+    }
+    .novita-card:hover { transform:translateY(-7px); box-shadow:0 24px 60px rgba(92,61,46,.15); }
+    .novita-card:hover::after { border-color:var(--ocra); }
+    .novita-img {
+      width:100%; aspect-ratio:4/3; overflow:hidden;
+      background:linear-gradient(135deg, var(--ocra-light) 0%, var(--lotus-soft) 100%);
+      display:flex; align-items:center; justify-content:center; position:relative;
+    }
+    .novita-img img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.22,1,.36,1); }
+    .novita-card:hover .novita-img img { transform:scale(1.08); }
+    .novita-img .ef { font-size:3.5rem; transition:transform .5s; }
+    .novita-card:hover .novita-img .ef { transform:scale(1.15); }
+    /* overlay su hover */
+    .novita-img::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(92,61,46,.4) 0%, transparent 60%);
+      opacity:0; transition:opacity .4s;
+    }
+    .novita-card:hover .novita-img::after { opacity:1; }
+    .novita-body { padding:24px; }
+    .novita-tag {
+      font-size:.62rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--ocra); margin-bottom:7px;
+    }
+    .novita-name {
+      font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400;
+      color:var(--marrone); margin-bottom:7px; line-height:1.2;
+    }
+    .novita-desc { font-size:.82rem; color:var(--testo-soft); line-height:1.7; }
+    .badge-nuovo {
+      display:inline-block; background:var(--lotus); color:var(--marrone);
+      font-size:.58rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+      padding:4px 12px; border-radius:0; margin-bottom:10px;
+      position:relative; overflow:hidden;
+    }
+    .badge-nuovo::before {
+      content:''; position:absolute; inset:0; background:rgba(255,255,255,.3);
+      transform:translateX(-100%); animation:shimmer 2.5s infinite 1s;
+    }
+    @keyframes shimmer { to { transform:translateX(200%); } }
 
-    #prodotti { background:var(--lotus-soft); }
-    .categorie-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:20px; }
-    .categoria-card { background:var(--bianco); border-radius:4px; padding:32px 24px; text-align:center; border-bottom:3px solid var(--ocra-light); transition:border-color .3s,transform .3s,box-shadow .3s; cursor:pointer; }
-    .categoria-card:hover { border-color:var(--ocra); transform:translateY(-4px); box-shadow:0 12px 30px rgba(92,61,46,.1); }
-    .categoria-icon { font-size:2.2rem; margin-bottom:14px; display:block; }
-    .categoria-nome { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:600; color:var(--marrone); }
-    .categoria-desc { font-size:.78rem; color:var(--testo-soft); margin-top:6px; line-height:1.5; }
-    .categoria-cta { margin-top:14px; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ocra); font-weight:500; }
+    /* ── PRODOTTI ── */
+    #prodotti {
+      background:var(--lotus-soft);
+      background-image: radial-gradient(ellipse at 10% 90%, rgba(200,168,75,.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 90% 10%, rgba(212,165,165,.12) 0%, transparent 50%);
+    }
+    .categorie-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+    .categoria-card {
+      background:var(--bianco); border-radius:3px; padding:36px 28px; text-align:center;
+      position:relative; overflow:hidden; cursor:none;
+      transition:transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s;
+      border-bottom:2px solid transparent;
+    }
+    .categoria-card::before {
+      content:''; position:absolute; bottom:0; left:50%; width:0; height:2px;
+      background:var(--ocra); transform:translateX(-50%);
+      transition:width .4s cubic-bezier(.22,1,.36,1);
+    }
+    .categoria-card:hover { transform:translateY(-8px); box-shadow:0 20px 50px rgba(92,61,46,.13); }
+    .categoria-card:hover::before { width:100%; }
+    /* sfondo animato al hover */
+    .categoria-card::after {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 50% 120%, rgba(200,168,75,.06) 0%, transparent 60%);
+      opacity:0; transition:opacity .4s;
+    }
+    .categoria-card:hover::after { opacity:1; }
+    .categoria-icon {
+      font-size:2.4rem; margin-bottom:18px; display:block;
+      transition:transform .45s cubic-bezier(.22,1,.36,1);
+    }
+    .categoria-card:hover .categoria-icon { transform:translateY(-4px) scale(1.1); }
+    .categoria-nome {
+      font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:600;
+      color:var(--marrone); letter-spacing:.02em;
+    }
+    .categoria-desc { font-size:.77rem; color:var(--testo-soft); margin-top:8px; line-height:1.6; }
+    .categoria-cta {
+      margin-top:16px; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--ocra); font-weight:500; display:flex; align-items:center;
+      justify-content:center; gap:6px; transition:gap .3s;
+    }
+    .categoria-card:hover .categoria-cta { gap:10px; }
+    .categoria-cta::after { content:'→'; transition:transform .3s; }
+    .categoria-card:hover .categoria-cta::after { transform:translateX(3px); }
 
-    .modal-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(30,18,10,.78); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px; }
+    /* ── MODALE ── */
+    .modal-overlay {
+      display:none; position:fixed; inset:0; z-index:500;
+      background:rgba(30,18,10,.8); backdrop-filter:blur(10px);
+      align-items:center; justify-content:center; padding:20px;
+    }
     .modal-overlay.open { display:flex; }
-    .modal { background:var(--crema); border-radius:6px; max-width:920px; width:100%; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 32px 80px rgba(30,18,10,.4); animation:modalIn .35s ease; }
-    @keyframes modalIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
-    .modal-header { padding:24px 32px; border-bottom:1px solid var(--ocra-light); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; background:var(--bianco); }
-    .modal-title-wrap { display:flex; align-items:center; gap:14px; }
-    .modal-icon { font-size:1.8rem; }
-    .modal-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:600; color:var(--marrone); }
-    .modal-desc-hdr { font-size:.82rem; color:var(--testo-soft); margin-top:2px; }
-    .modal-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--ocra-light); background:transparent; cursor:pointer; font-size:1.1rem; color:var(--testo-soft); display:flex; align-items:center; justify-content:center; transition:all .2s; }
-    .modal-close:hover { background:var(--ocra); color:var(--bianco); border-color:var(--ocra); }
-    .modal-body { padding:32px; overflow-y:auto; flex:1; }
+    .modal {
+      background:var(--crema); border-radius:4px; max-width:940px; width:100%;
+      max-height:90vh; overflow:hidden; display:flex; flex-direction:column;
+      box-shadow:0 40px 100px rgba(30,18,10,.5);
+      animation:modalIn .45s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes modalIn { from{opacity:0;transform:translateY(30px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+    .modal-header {
+      padding:28px 36px; border-bottom:1px solid var(--ocra-light);
+      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+      background:var(--bianco);
+    }
+    .modal-title-wrap { display:flex; align-items:center; gap:16px; }
+    .modal-icon { font-size:2rem; }
+    .modal-title { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--marrone); }
+    .modal-desc-hdr { font-size:.82rem; color:var(--testo-soft); margin-top:3px; }
+    .modal-close {
+      width:38px; height:38px; border-radius:50%; border:1px solid var(--ocra-light);
+      background:transparent; cursor:none; font-size:1rem; color:var(--testo-soft);
+      display:flex; align-items:center; justify-content:center;
+      transition:all .3s; flex-shrink:0;
+    }
+    .modal-close:hover { background:var(--marrone); color:var(--bianco); border-color:var(--marrone); transform:rotate(90deg); }
+    .modal-body { padding:36px; overflow-y:auto; flex:1; }
     .modal-empty { text-align:center; padding:60px 20px; color:var(--testo-soft); }
     .modal-empty .mei { font-size:3rem; margin-bottom:16px; }
     .modal-empty p { font-size:.9rem; line-height:1.8; }
-    .catalogo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; }
-    .catalogo-item { border-radius:4px; overflow:hidden; background:var(--bianco); border:1px solid var(--ocra-light); transition:transform .3s,box-shadow .3s; }
-    .catalogo-item.clickable { cursor:pointer; }
-    .catalogo-item.clickable:hover { transform:translateY(-4px); box-shadow:0 12px 30px rgba(92,61,46,.12); }
-    .catalogo-foto { width:100%; aspect-ratio:3/4; overflow:hidden; background:var(--ocra-light); display:flex; align-items:center; justify-content:center; }
-    .catalogo-foto img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
-    .catalogo-item.clickable:hover .catalogo-foto img { transform:scale(1.07); }
+
+    /* Griglia catalogo */
+    .catalogo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px; }
+    .catalogo-item {
+      border-radius:3px; overflow:hidden; background:var(--bianco);
+      transition:transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s;
+      position:relative;
+    }
+    .catalogo-item.clickable { cursor:none; }
+    .catalogo-item.clickable:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(92,61,46,.14); }
+    .catalogo-foto {
+      width:100%; aspect-ratio:3/4; overflow:hidden;
+      background:linear-gradient(135deg, var(--ocra-light) 0%, var(--lotus-soft) 100%);
+      display:flex; align-items:center; justify-content:center; position:relative;
+    }
+    .catalogo-foto img { width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+    .catalogo-item.clickable:hover .catalogo-foto img { transform:scale(1.08); }
     .catalogo-foto .ef { font-size:3rem; }
-    .catalogo-info { padding:14px 16px; }
-    .catalogo-nome { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--marrone); margin-bottom:4px; }
-    .catalogo-note { font-size:.78rem; color:var(--testo-soft); line-height:1.5; }
-    .catalogo-prezzo { font-size:.85rem; font-weight:500; color:var(--ocra); margin-top:6px; }
+    .catalogo-info { padding:16px; }
+    .catalogo-nome { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--marrone); margin-bottom:5px; }
+    .catalogo-note { font-size:.77rem; color:var(--testo-soft); line-height:1.5; }
+    .catalogo-prezzo { font-size:.85rem; font-weight:500; color:var(--ocra); margin-top:8px; }
 
-    .lightbox { display:none; position:fixed; inset:0; z-index:900; background:rgba(10,5,0,.93); align-items:center; justify-content:center; }
-    .lightbox.open { display:flex; }
-    .lightbox-img { max-width:90vw; max-height:88vh; object-fit:contain; border-radius:3px; }
-    .lightbox-close { position:absolute; top:20px; right:24px; font-size:1.8rem; color:var(--bianco); cursor:pointer; background:none; border:none; opacity:.7; transition:opacity .2s; }
-    .lightbox-close:hover { opacity:1; }
-    .lightbox-caption { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.7); font-size:.85rem; }
+    /* Lightbox */
+    .lightbox { display:none; position:fixed; inset:0; z-index:900; background:rgba(10,5,0,.95); align-items:center; justify-content:center; }
+    .lightbox.open { display:flex; animation:fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .lightbox-img { max-width:90vw; max-height:88vh; object-fit:contain; border-radius:2px; animation:scaleIn .35s cubic-bezier(.22,1,.36,1); }
+    @keyframes scaleIn { from{transform:scale(.92)} to{transform:scale(1)} }
+    .lightbox-close { position:absolute; top:24px; right:28px; font-size:1.6rem; color:rgba(255,255,255,.6); cursor:none; background:none; border:none; transition:all .2s; }
+    .lightbox-close:hover { color:var(--bianco); transform:rotate(90deg); }
+    .lightbox-caption { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,.6); font-size:.82rem; letter-spacing:.08em; }
 
-    #chisiamo { background:var(--marrone); color:var(--bianco); }
+    /* ── CHI SIAMO ── */
+    #chisiamo {
+      background:var(--marrone); color:var(--bianco); position:relative; overflow:hidden;
+    }
+    #chisiamo::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 90% 50%, rgba(200,168,75,.12) 0%, transparent 60%),
+                 repeating-linear-gradient(135deg, transparent, transparent 60px, rgba(255,255,255,.012) 60px, rgba(255,255,255,.012) 61px);
+    }
+    .chisiamo-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; position:relative; z-index:1; }
     #chisiamo .section-title { color:var(--ocra-light); }
     #chisiamo .section-label { color:var(--ocra); }
     #chisiamo .section-divider { background:var(--ocra); }
-    .chisiamo-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
-    .chisiamo-testo p { font-size:1rem; line-height:1.9; color:rgba(255,255,255,.8); margin-bottom:16px; }
-    .chisiamo-valori { display:flex; flex-direction:column; gap:20px; }
-    .valore { display:flex; align-items:flex-start; gap:16px; background:rgba(255,255,255,.06); padding:20px; border-radius:4px; border-left:3px solid var(--ocra); }
-    .valore-icon { font-size:1.6rem; flex-shrink:0; }
-    .valore-titolo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ocra-light); margin-bottom:4px; }
-    .valore-testo { font-size:.82rem; color:rgba(255,255,255,.65); line-height:1.6; }
+    .chisiamo-testo p { font-size:1rem; line-height:2; color:rgba(255,255,255,.75); margin-bottom:18px; }
+    .chisiamo-valori { display:flex; flex-direction:column; gap:16px; }
+    .valore {
+      display:flex; align-items:flex-start; gap:18px;
+      background:rgba(255,255,255,.05); padding:22px; border-radius:3px;
+      border-left:2px solid var(--ocra);
+      transition:background .3s, transform .3s;
+    }
+    .valore:hover { background:rgba(255,255,255,.09); transform:translateX(4px); }
+    .valore-icon { font-size:1.5rem; flex-shrink:0; }
+    .valore-titolo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ocra-light); margin-bottom:5px; }
+    .valore-testo { font-size:.82rem; color:rgba(255,255,255,.6); line-height:1.7; }
 
+    /* ── ORARI ── */
     #orari { background:var(--bianco); }
-    .orari-grid { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+    .orari-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
     .orari-tabella { width:100%; border-collapse:collapse; }
-    .orari-tabella tr { border-bottom:1px solid var(--ocra-light); }
-    .orari-tabella td { padding:14px 0; font-size:.9rem; }
+    .orari-tabella tr { border-bottom:1px solid rgba(200,168,75,.2); transition:background .2s; }
+    .orari-tabella tr:hover { background:var(--crema); }
+    .orari-tabella td { padding:15px 0; font-size:.9rem; }
     .orari-tabella td:first-child { color:var(--marrone); font-weight:500; }
     .orari-tabella td:last-child { color:var(--testo-soft); text-align:right; }
     .chiuso { color:var(--lotus)!important; font-style:italic; }
-    .contatti-lista { display:flex; flex-direction:column; gap:20px; }
-    .contatto-item { display:flex; align-items:center; gap:16px; }
-    .contatto-icon { width:44px; height:44px; border-radius:50%; background:var(--lotus-soft); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; border:1px solid var(--ocra-light); }
-    .contatto-label { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ocra); }
+    .contatti-lista { display:flex; flex-direction:column; gap:22px; }
+    .contatto-item { display:flex; align-items:center; gap:18px; }
+    .contatto-icon {
+      width:46px; height:46px; border-radius:3px;
+      background:var(--lotus-soft); display:flex; align-items:center;
+      justify-content:center; font-size:1.2rem; flex-shrink:0;
+      border:1px solid var(--ocra-light); transition:all .3s;
+    }
+    .contatto-item:hover .contatto-icon { background:var(--ocra-light); transform:scale(1.05); }
+    .contatto-label { font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ocra); }
     .contatto-valore { font-size:.95rem; color:var(--testo); margin-top:2px; }
-    .contatto-valore a { color:var(--marrone); text-decoration:none; }
+    .contatto-valore a { color:var(--marrone); text-decoration:none; transition:color .2s; }
     .contatto-valore a:hover { color:var(--ocra); }
 
+    /* ── MAPPA ── */
     #mappa { padding:0; }
-    .mappa-wrapper { position:relative; height:360px; overflow:hidden; }
-    .mappa-wrapper iframe { width:100%; height:100%; border:none; filter:sepia(20%) saturate(80%); }
-    .mappa-overlay { position:absolute; left:40px; top:50%; transform:translateY(-50%); background:var(--bianco); padding:28px 32px; border-radius:4px; box-shadow:0 12px 40px rgba(92,61,46,.18); max-width:280px; border-left:4px solid var(--ocra); }
-    .mappa-nome { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--marrone); margin-bottom:8px; }
-    .mappa-addr { font-size:.85rem; color:var(--testo-soft); line-height:1.6; }
+    .mappa-wrapper { position:relative; height:380px; overflow:hidden; }
+    .mappa-wrapper iframe { width:100%; height:100%; border:none; filter:sepia(25%) saturate(75%) brightness(1.02); }
+    .mappa-overlay {
+      position:absolute; left:48px; top:50%; transform:translateY(-50%);
+      background:var(--bianco); padding:32px 36px; border-radius:3px;
+      box-shadow:0 16px 50px rgba(92,61,46,.22); max-width:290px;
+      border-left:3px solid var(--ocra);
+    }
+    .mappa-nome { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--marrone); margin-bottom:8px; }
+    .mappa-addr { font-size:.85rem; color:var(--testo-soft); line-height:1.7; }
 
-    footer { background:var(--testo); color:rgba(255,255,255,.5); text-align:center; padding:32px 40px; font-size:.78rem; letter-spacing:.08em; }
+    /* ── FOOTER ── */
+    footer {
+      background:var(--testo); color:rgba(255,255,255,.4);
+      text-align:center; padding:36px 40px; font-size:.75rem; letter-spacing:.1em;
+      position:relative; overflow:hidden;
+    }
+    footer::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:80px; height:1px; background:var(--ocra); opacity:.4;
+    }
     footer strong { color:var(--ocra-light); }
 
-    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:1px; background:var(--ocra); transition:width .3s; }
-    .nav-links a:hover::after { width:100%; }
+    /* ── ANIMAZIONI SCROLL ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(32px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeLeft {
+      from { opacity:0; transform:translateX(-24px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes fadeRight {
+      from { opacity:0; transform:translateX(24px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
 
-    .hero-scroll { position:absolute; bottom:96px; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; animation:fadeUp 1s .5s ease both; }
-    .hero-scroll-text { font-size:.63rem; letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.45); }
-    .hero-scroll-icon { width:22px; animation:scrollBounce 1.8s ease infinite; }
-    @keyframes scrollBounce { 0%,100%{transform:translateY(0);opacity:.45} 50%{transform:translateY(7px);opacity:1} }
+    .reveal       { opacity:0; transform:translateY(36px); transition:opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .reveal-left  { opacity:0; transform:translateX(-30px); transition:opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .reveal-right { opacity:0; transform:translateX(30px);  transition:opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+    .reveal.visible, .reveal-left.visible, .reveal-right.visible { opacity:1; transform:none; }
 
-    .wave-sep { display:block; line-height:0; margin-top:-1px; }
-    .wave-sep svg { display:block; width:100%; height:60px; }
+    /* stagger per le griglie */
+    .novita-card:nth-child(1) { transition-delay:.05s; }
+    .novita-card:nth-child(2) { transition-delay:.12s; }
+    .novita-card:nth-child(3) { transition-delay:.19s; }
+    .novita-card:nth-child(4) { transition-delay:.26s; }
+    .categoria-card:nth-child(1) { transition-delay:.04s; }
+    .categoria-card:nth-child(2) { transition-delay:.09s; }
+    .categoria-card:nth-child(3) { transition-delay:.14s; }
+    .categoria-card:nth-child(4) { transition-delay:.19s; }
+    .categoria-card:nth-child(5) { transition-delay:.24s; }
+    .categoria-card:nth-child(6) { transition-delay:.29s; }
+    .categoria-card:nth-child(7) { transition-delay:.34s; }
+    .categoria-card:nth-child(8) { transition-delay:.39s; }
 
-    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-    .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
-    .reveal.visible { opacity:1; transform:translateY(0); }
-
+    /* ── RESPONSIVE ── */
     @media(max-width:768px){
       nav{padding:0 20px;}
-      .nav-links{display:none;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--crema);border-bottom:1px solid var(--ocra-light);padding:16px 0;}
+      .nav-links{display:none;flex-direction:column;position:fixed;top:68px;left:0;right:0;background:var(--crema);border-bottom:1px solid var(--ocra-light);padding:16px 0;}
       .nav-links.open{display:flex;}
-      .nav-links a{padding:12px 24px;display:block;}
+      .nav-links a{padding:13px 24px;display:block;}
       .hamburger{display:flex;}
-      section{padding:60px 20px;}
+      section{padding:70px 20px;}
       .chisiamo-grid,.orari-grid{grid-template-columns:1fr;gap:40px;}
       .mappa-overlay{display:none;}
-      .modal-header{padding:16px 20px;}
+      .modal-header{padding:18px 20px;}
       .modal-body{padding:20px;}
-      .nav-links a::after{display:none;}
-      .hero-scroll{display:none;}
+      .cursor,.cursor-ring{display:none;}
+      body{cursor:auto;}
+      a,button{cursor:pointer;}
     }
   </style>
 </head>
 <body>
 
-<nav>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="mainNav">
   <a href="#hero" class="nav-logo">Seconda Pelle</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#novita">Novità</a></li>
@@ -234,21 +511,16 @@
 </nav>
 
 <section id="hero">
+  <div class="hero-ring"></div>
   <div class="hero-content">
     <span class="hero-badge">Sant'Agata sul Santerno</span>
-    <h1 class="hero-title">Seconda<br>Pelle</h1>
+    <h1 class="hero-title">Seconda<br><em>Pelle</em></h1>
     <p class="hero-subtitle">Santerno Relax Store</p>
+    <div class="hero-divider"></div>
     <div class="hero-cta">
       <a href="#novita" class="btn btn-light">Scopri le novità</a>
       <a href="#orari" class="btn btn-outline">Vieni a trovarci</a>
     </div>
-  </div>
-  <div class="hero-scroll" onclick="document.getElementById('novita').scrollIntoView({behavior:'smooth'})">
-    <span class="hero-scroll-text">Scopri</span>
-    <svg class="hero-scroll-icon" viewBox="0 0 24 26" fill="none">
-      <polyline points="4,4 12,13 20,4" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="4,13 12,22 20,13" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
   </div>
   <div class="hero-wave">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#faf6f0"/></svg>
@@ -273,30 +545,22 @@
   <div class="categorie-grid" id="categorieGrid"></div>
 </section>
 
-<div class="wave-sep" style="background:var(--lotus-soft)">
-  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,55 1080,5 1440,30 L1440,60 L0,60 Z" fill="#5c3d2e"/></svg>
-</div>
-
 <section id="chisiamo">
   <div class="chisiamo-grid">
-    <div class="chisiamo-testo reveal">
+    <div class="chisiamo-testo reveal-left">
       <p class="section-label">Chi siamo</p>
       <h2 class="section-title">Il tuo negozio<br>di fiducia</h2>
       <div class="section-divider"></div>
       <p>Seconda Pelle è il negozio di Sant'Agata sul Santerno dove comfort e qualità si incontrano ogni giorno. Il nostro nome dice tutto: vogliamo che ogni capo che indossi si senta come una seconda pelle.</p>
       <p>Trovi da noi una selezione curata di intimo, abbigliamento professionale, costumi, pigiami e molto altro — per ogni stagione e ogni esigenza.</p>
     </div>
-    <div class="chisiamo-valori reveal">
+    <div class="chisiamo-valori reveal-right">
       <div class="valore"><span class="valore-icon">🤝</span><div><div class="valore-titolo">Servizio personalizzato</div><div class="valore-testo">Ti aiutiamo a trovare esattamente quello che cerchi, con gentilezza e professionalità.</div></div></div>
       <div class="valore"><span class="valore-icon">✨</span><div><div class="valore-titolo">Qualità selezionata</div><div class="valore-testo">Scegliamo con cura i marchi e i prodotti che portiamo in negozio.</div></div></div>
       <div class="valore"><span class="valore-icon">🌿</span><div><div class="valore-titolo">Comfort prima di tutto</div><div class="valore-testo">Dal lavoro al riposo, ogni capo è pensato per farti stare bene.</div></div></div>
     </div>
   </div>
 </section>
-
-<div class="wave-sep" style="background:var(--marrone)">
-  <svg viewBox="0 0 1440 60" preserveAspectRatio="none"><path d="M0,30 C360,5 1080,55 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/></svg>
-</div>
 
 <section id="orari">
   <div class="orari-grid">
@@ -334,7 +598,7 @@
 
 <div id="mappa">
   <div class="mappa-wrapper">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5697.76340246813!2d11.8756036!3d44.435588800000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477e1cf2c21df223%3A0xa225c3d945ca8b66!2sSanterno%20calze%20e%20intimo%20SECONDAPELLE!5e0!3m2!1sit!2sit!4v1779290661170!5m2!1sit!2sit" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mappa"></iframe>
+    <iframe src="https://maps.google.com/maps?q=Sant'Agata+sul+Santerno&z=14&output=embed" title="Mappa" loading="lazy"></iframe>
     <div class="mappa-overlay">
       <div class="mappa-nome">Seconda Pelle</div>
       <div class="mappa-addr" id="mappa-addr"></div>
@@ -381,6 +645,11 @@ function mediaEl(foto, emoji) {
   return `<span class="ef">${emoji}</span>`;
 }
 
+// Verifica che dati.js sia caricato correttamente
+if (typeof CONTATTI === 'undefined' || typeof CATEGORIE === 'undefined') {
+  console.warn('⚠️ dati.js non caricato. Se apri il file direttamente dal computer, il browser blocca gli script esterni. Carica il sito su GitHub Pages o usa un server locale (es. VS Code Live Server).');
+} else {
+
 // Contatti
 const C = CONTATTI;
 document.getElementById('ct-indirizzo').innerHTML = `${C.indirizzo}<br>${C.citta}`;
@@ -392,11 +661,12 @@ document.getElementById('mappa-addr').innerHTML   = `Santerno Relax Store<br>${C
 // Novità — filtrate automaticamente dai prodotti con nuovo: true
 const ng = document.getElementById('novitaGrid');
 const novitaSection = document.getElementById('novita');
-const novitaHtml = [];
+let novitaCount = 0;
 CATEGORIE.forEach(cat => {
   (cat.prodotti || []).forEach(p => {
     if (!p.nuovo) return;
-    novitaHtml.push(`
+    novitaCount++;
+    ng.innerHTML += `
       <div class="novita-card reveal">
         <div class="novita-img">${mediaEl(p.foto, p.emoji)}</div>
         <div class="novita-body">
@@ -405,11 +675,10 @@ CATEGORIE.forEach(cat => {
           <div class="novita-name">${p.nome}</div>
           <div class="novita-desc">${p.note || ''}</div>
         </div>
-      </div>`);
+      </div>`;
   });
 });
-if (novitaHtml.length === 0) novitaSection.style.display = 'none';
-ng.innerHTML = novitaHtml.join('');
+if (novitaCount === 0) novitaSection.style.display = 'none';
 
 // Categorie
 const cg = document.getElementById('categorieGrid');
@@ -419,22 +688,83 @@ CATEGORIE.forEach((c,i) => {
   el.innerHTML = `<span class="categoria-icon">${c.icon}</span>
     <div class="categoria-nome">${c.nome}</div>
     <div class="categoria-desc">${c.desc}</div>
-    <div class="categoria-cta">Vedi catalogo →</div>`;
+    <div class="categoria-cta">Vedi catalogo</div>`;
   el.onclick = () => apriCatalogo(i);
   cg.appendChild(el);
 });
 
 // Orari
 const ot = document.getElementById('orariTabella');
-ot.innerHTML = ORARI.map(o => `<tr><td>${o.giorno}</td><td class="${o.chiuso?'chiuso':''}">${o.orario}</td></tr>`).join('');
+ORARI.forEach(o => {
+  ot.innerHTML += `<tr><td>${o.giorno}</td><td class="${o.chiuso?'chiuso':''}">${o.orario}</td></tr>`;
+});
+
+} // fine guardia dati.js
 
 document.getElementById('anno').textContent = new Date().getFullYear();
 function toggleMenu() { document.getElementById('navLinks').classList.toggle('open'); }
 
+// Cursore personalizzato
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let cursorVisible = false;
+let ringX = 0, ringY = 0, dotX = 0, dotY = 0;
+
+document.addEventListener('mousemove', e => {
+  dotX = e.clientX; dotY = e.clientY;
+  cursor.style.left = dotX + 'px';
+  cursor.style.top  = dotY + 'px';
+  if (!cursorVisible) {
+    cursorVisible = true;
+    cursor.style.opacity = '1';
+    cursorRing.style.opacity = '0.55';
+    ringX = dotX; ringY = dotY;
+  }
+});
+
+// Ring segue con leggero ritardo (lerp)
+(function lerpRing() {
+  ringX += (dotX - ringX) * 0.18;
+  ringY += (dotY - ringY) * 0.18;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top  = ringY + 'px';
+  requestAnimationFrame(lerpRing);
+})();
+
+document.addEventListener('mouseleave', () => {
+  cursor.style.opacity = '0';
+  cursorRing.style.opacity = '0';
+  cursorVisible = false;
+});
+
+// Espandi su elementi interattivi
+document.querySelectorAll('a, button, [onclick], .categoria-card, .novita-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '16px';
+    cursor.style.height = '16px';
+    cursorRing.style.width = '48px';
+    cursorRing.style.height = '48px';
+    cursorRing.style.opacity = '0.3';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '10px';
+    cursor.style.height = '10px';
+    cursorRing.style.width = '36px';
+    cursorRing.style.height = '36px';
+    cursorRing.style.opacity = '0.55';
+  });
+});
+
+// Navbar shadow on scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+}, {passive:true});
+
+// Scroll reveal (tutte le classi reveal)
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:.1});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => obs.observe(el));
 
 function apriCatalogo(i) {
   const c = CATEGORIE[i];
